@@ -1,23 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-// The same public node as DEFAULT_ROBINHOOD_RPC_URL in packages/core/src/chain.ts. The browser never gets
-// the server's ROBINHOOD_RPC_URL, which may carry a provider key.
-const ROBINHOOD_RPC_ORIGIN = "https://rpc.testnet.chain.robinhood.com";
-
-// From Privy's CSP guide (docs.privy.io/security/implementation-guide/content-security-policy):
-// its iframe and WalletConnect's verify frames, its API, RPC and wallet relays, and Cloudflare
-// Turnstile, the one script host Privy's base policy names, for its captcha.
-const PRIVY_FRAMES = ["https://auth.privy.io", "https://verify.walletconnect.com", "https://verify.walletconnect.org"];
-const PRIVY_CONNECT = [
-  "https://auth.privy.io",
-  "wss://relay.walletconnect.com",
-  "wss://relay.walletconnect.org",
-  "wss://www.walletlink.org",
-  "https://*.rpc.privy.systems",
-  "https://explorer-api.walletconnect.com",
-];
-const TURNSTILE = "https://challenges.cloudflare.com";
-
 // React rebuilds server error stacks with eval in development only; production never allows it.
 const DEV_EVAL = process.env.NODE_ENV === "development" ? ["'unsafe-eval'"] : [];
 
@@ -29,20 +11,19 @@ function newNonce(): string {
 /**
  * The one Content Security Policy for every page (C14). Scripts run only with this response's
  * nonce, which Next stamps on its own scripts, or when loaded by such a script ('strict-dynamic');
- * 'self' and the Turnstile host are the fallback for browsers without 'strict-dynamic'. Inline
- * script without the nonce never runs. Styles keep 'unsafe-inline' without a nonce, because a
- * nonce in style-src switches 'unsafe-inline' off and Privy's modal styles itself inline.
+ * 'self' is the fallback for browsers without 'strict-dynamic'. Inline script without the nonce
+ * never runs. Wallet Selector's modal uses inline styles, so style-src keeps the inline allowance.
  */
 function contentSecurityPolicy(nonce: string): string {
   return [
     "default-src 'self'",
-    ["script-src 'self'", `'nonce-${nonce}'`, "'strict-dynamic'", TURNSTILE, ...DEV_EVAL].join(" "),
+    ["script-src 'self'", `'nonce-${nonce}'`, "'strict-dynamic'", ...DEV_EVAL].join(" "),
     "style-src 'self' 'unsafe-inline'",
-    "img-src 'self' data: blob: https://cdn.robinhood.com https://explorer-api.walletconnect.com",
+    "img-src 'self' data: blob:",
     "font-src 'self'",
-    ["connect-src 'self'", ROBINHOOD_RPC_ORIGIN, ...PRIVY_CONNECT].join(" "),
-    ["child-src", ...PRIVY_FRAMES].join(" "),
-    ["frame-src", ...PRIVY_FRAMES, TURNSTILE].join(" "),
+    "connect-src 'self' https://rpc.testnet.near.org",
+    "child-src 'self'",
+    "frame-src 'self'",
     "worker-src 'self'",
     "manifest-src 'self'",
     "object-src 'none'",

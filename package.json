@@ -10,10 +10,17 @@
     "dompurify": "3.4.17",
     "follow-redirects": "1.16.2",
     "decode-uri-component": "0.5.1",
-    "zod@^4": "4.6.6"
+    "zod@^4": "4.6.6",
+    "near-sandbox": { "tar": "7.5.22" },
+    "@meteorwallet/sdk": { "nanoid": "5.1.16" }
   },
   "scripts": {
     "test": "npm test --workspaces --if-present",
-    "santa": "npm run santa --workspace=@santa/agent --"
+    "santa": "npm run santa --workspace=@santa/agent --",
+    "near:contract:test": "cargo test --locked --manifest-path packages/contracts/near/Cargo.toml",
+    "near:contract:build": "cargo build --locked --manifest-path packages/contracts/near/Cargo.toml --target wasm32-unknown-unknown --release",
+    "near:contract:deploy:testnet": "node scripts/deploy-near-testnet.mjs",
+    "near:integration:test": "npm run near:contract:build && cargo build --locked --manifest-path packages/contracts/near/Cargo.toml -p santa-test-token --target wasm32-unknown-unknown --release && npm run near:integration:test --workspace=@santa/core",
+    "hackathon:check": "node scripts/check-hackathon.mjs"
   }
 }

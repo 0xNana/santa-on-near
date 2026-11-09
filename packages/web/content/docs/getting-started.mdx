@@ -1,44 +1,42 @@
 ---
 title: Getting started
-description: Set up Santa on Robinhood Chain Testnet.
+description: Run Santa on NEAR Testnet.
 ---
 
 ## Network
 
 | Setting | Value |
 | --- | --- |
-| Network | Robinhood Chain Testnet |
-| Chain ID | 46630 |
-| Gas token | Test ETH |
-| RPC | https://rpc.testnet.chain.robinhood.com |
-| Explorer | https://explorer.testnet.chain.robinhood.com |
+| Network | NEAR Testnet |
+| RPC | `https://rpc.testnet.near.org` |
+| Explorer | [NEARBlocks Testnet](https://testnet.nearblocks.io) |
 
-These settings come from [Robinhood’s network guide](https://docs.robinhood.com/chain/connecting/). Obtain test ETH from the [testnet faucet](https://faucet.testnet.chain.robinhood.com/).
+Santa requires a NEAR Testnet contract account, a separately funded relayer account, and at least one testnet NEP-141 token contract. Only tokens in the Santa contract allowlist can be gifted.
 
-## Run locally
+## Install and configure
 
 ```sh
 npm ci
 cp .env.example .env
+```
+
+Set `NEAR_CONTRACT_ACCOUNT`, `NEAR_OWNER_ACCOUNT`, `NEAR_RELAYER_ACCOUNT`, `NEAR_ALLOWLISTED_TOKEN_IDS`, `NEAR_RELAYER_SECRET_KEY`, and `SANTA_PUBLIC_ORIGIN` in the root `.env`. For the browser, set the matching `NEXT_PUBLIC_NEAR_CONTRACT_ACCOUNT` and `NEXT_PUBLIC_NEAR_TOKEN_ACCOUNT_IDS`. The relayer key is server-only and must belong to `NEAR_RELAYER_ACCOUNT`.
+
+## Deploy a fresh contract account
+
+Install Rust, the `wasm32-unknown-unknown` target, and `near-cli-rs`. Create the contract account on Testnet and configure its deployment access key in the local NEAR CLI keychain. Then run:
+
+```sh
+npm run near:contract:test
+npm run near:contract:deploy:testnet
+```
+
+The script compiles, deploys, initializes, and reads the new contract. It is for a fresh account only; it does not upgrade an initialized contract. Deployment is never automatic.
+
+## Run the app
+
+```sh
 npm run dev --workspace=@santa/web
 ```
 
-Set `NEXT_PUBLIC_PRIVY_APP_ID`, both vault settings, `RELAYER_PRIVATE_KEY`, and `SANTA_PUBLIC_ORIGIN`. Use shared Upstash credentials for a hosted server, or `SANTA_ALLOW_MEMORY_STORE=1` locally. Local requests use `SANTA_DEV_COUNTRY` (for example GH).
-
-## Deploy a test vault
-
-```sh
-cd packages/contracts
-./install-deps.sh
-./deploy.sh testnet
-```
-
-Set `DEPLOYER_PRIVATE_KEY` and a separate `SANTA_RELAYER_ADDRESS` first. The deployer must have test ETH. Set `SANTA_STOCK_ADDRESSES` to the testnet ERC-20s to list. The script creates SantaVault. Set `SANTA_VAULT_ADDRESS` and `NEXT_PUBLIC_SANTA_VAULT_ADDRESS` to the printed vault address, then rebuild the web app. They must match.
-
-## Get stocks on testnet
-
-Use the [Robinhood Chain testnet faucet](https://faucet.testnet.chain.robinhood.com/) to obtain test ETH and listed stock tokens. The current vault lists TSLA, AMD, AMZN, NFLX and PLTR.
-
-## Send and receive
-
-Open `/send`, connect your wallet, choose a stock, choose 1 to 100 units, and add a note. Approve exactly that quantity to the vault, then seal the gift. Copy its link privately. The recipient signs in, confirms the declaration, and opens it. No wrapping payment is required.
+Open `/send`, connect a NEAR Testnet wallet, select a configured allowlisted token, and create a gift. The sender needs token balance, FT storage registration where required, and enough testnet NEAR to pay for `ft_transfer_call`. The claim relayer separately needs testnet NEAR.

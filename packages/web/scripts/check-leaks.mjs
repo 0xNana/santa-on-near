@@ -52,6 +52,10 @@ function needlesFor(env) {
     const value = raw.trim();
     if (value === "") continue;
     if (name.startsWith("NEXT_PUBLIC_")) skipped.push(`${name} (public by design)`);
+    else if (["NEAR_CONTRACT_ACCOUNT", "NEAR_OWNER_ACCOUNT", "NEAR_RELAYER_ACCOUNT"].includes(name)
+      && /^(?=.{2,64}$)[a-z0-9]+([._-][a-z0-9]+)*$/.test(value)) skipped.push(`${name} (public NEAR account)`);
+    else if (name === "NEAR_ALLOWLISTED_TOKEN_IDS" && value.split(",").every((id) => /^(?=.{2,64}$)[a-z0-9]+([._-][a-z0-9]+)*$/.test(id.trim()))) skipped.push(`${name} (public token allowlist)`);
+    else if (name === "NEAR_RPC_URL" && /^https:\/\/rpc\.testnet\.near\.org\/?$/.test(value)) skipped.push(`${name} (public NEAR endpoint)`);
     else if (name === "SANTA_STOCK_ADDRESSES" && value.split(",").every((address) => ADDRESS.test(address))) skipped.push(`${name} (public token addresses)`);
     else if (name === "ROBINHOOD_RPC_URL" && value === "https://rpc.testnet.chain.robinhood.com") skipped.push(`${name} (public network endpoint)`);
     else if (["SANTA_RELAYER_DAILY_CAP_WEI", "SANTA_RELAYER_MAX_GAS_PRICE_WEI"].includes(name) && /^[0-9]+$/.test(value)) skipped.push(`${name} (public spend limit)`);

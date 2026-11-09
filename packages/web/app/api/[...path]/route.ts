@@ -88,6 +88,11 @@ async function readCappedBody(request: NextRequest): Promise<string | null> {
 }
 
 async function handle(request: NextRequest): Promise<Response> {
+  if (process.env.SANTA_ENABLE_LEGACY_EVM_API !== "1") {
+    return Response.json({ ok: false, error: "legacy_api_disabled" }, {
+      status: 410, headers: { "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff" },
+    });
+  }
   let answer: SantaResponse;
   try {
     const deps = await serverDeps();

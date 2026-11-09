@@ -1,36 +1,28 @@
 ---
 title: FAQ
-description: Answers about sending stocks to loved ones with Santa.
+description: Answers about NEAR Testnet token gifts.
 ---
 
-## What can I gift with Santa?
+## What can I gift?
 
-Santa lets you send stocks to loved ones as a private gift link, with a personal note. The current vault supports TSLA, AMD, AMZN, NFLX, and PLTR on Robinhood Chain Testnet. You gift stock you already hold; Santa does not buy it for you.
+Any NEP-141 token contract that the Santa contract owner has allowlisted. The browser only offers the configured token IDs. Test tokens have no monetary value.
 
-## What does testnet mean for my stock gift?
+## Who pays the fees?
 
-The current experience uses testnet stock tokens on Robinhood Chain Testnet. They let you try the complete stock-gifting flow, but have no monetary value or equity ownership rights.
-
-## Who pays fees?
-
-The sender pays test ETH for approvals and gift creation. Santa’s relayer pays test ETH for claims. There is no wrapping fee.
+The sender pays the NEAR Testnet gas for the initial token transfer. Santa's configured relayer pays testnet gas for claims. This is a testnet feature and does not guarantee sponsored transactions on mainnet.
 
 ## Does the recipient need a wallet?
 
-No wallet app is required. Google or email sign-in creates a Privy embedded wallet. The recipient still signs a message proving that the wallet is theirs.
+Yes. The recipient connects a NEAR Testnet wallet and signs a NEP-413 message proving control of the destination account. Santa does not create an embedded wallet for them.
 
-## What if the link is lost?
+## What if I lose the gift link?
 
-Santa’s server cannot recover the secret key. The sender’s browser or CLI saves it locally before sending. If all copies are lost, the sender can refund after expiry.
+The claim secret is in the link fragment and is not stored by the contract or server. Keep a private copy. If the gift expires unclaimed, the original sender can request a refund.
 
-## Can a gift expire?
+## Is a refund automatic?
 
-Yes. After expiry, a refund returns an unclaimed gift to its original sender. A refund must be requested; it is not automatic.
+No. The sender must call the refund method after expiry. Refunds depend on the NEP-141 contract accepting the transfer.
 
-## Why are some requests refused by location?
+## Is the app on mainnet?
 
-Santa retains the existing conservative region and declaration checks during this migration. These are application controls, not claims about eligibility for Robinhood products.
-
-## Is Santa affiliated with Robinhood?
-
-Santa is an independent project built on Robinhood Chain Testnet.
+No. The active implementation is configured for NEAR Testnet and is not audited for production use.

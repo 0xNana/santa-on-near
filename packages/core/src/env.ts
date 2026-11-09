@@ -4,6 +4,7 @@ import { z } from "zod";
 import { JUDGE_CODE_TEXT } from "./judge.js";
 import { canonicalOrigin } from "./origin.js";
 import { DEFAULT_ROBINHOOD_RPC_URL } from "./chain.js";
+import { NEAR_TESTNET_RPC_URL } from "./near.js";
 
 const ROOT_ENV_FILE = fileURLToPath(new URL("../../../.env", import.meta.url));
 const SECP256K1_N = 0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141n;
@@ -15,8 +16,10 @@ const redisOrigin = httpsUrl.refine((value) => { try { const url = new URL(value
 const wei = z.string().regex(/^[1-9][0-9]{0,30}$/).transform(BigInt);
 
 const schema = z.object({
+  SANTA_CHAIN: z.enum(["robinhood", "near"]).default("near"),
   RELAYER_PRIVATE_KEY: privateKey,
   ROBINHOOD_RPC_URL: httpsUrl.default(DEFAULT_ROBINHOOD_RPC_URL),
+  NEAR_RPC_URL: httpsUrl.default(NEAR_TESTNET_RPC_URL),
   SANTA_VAULT_ADDRESS: address,
   SANTA_RELAYER_MAX_GAS_PRICE_WEI: wei.default(3_000_000_000n),
   SANTA_RELAYER_DAILY_CAP_WEI: wei.default(2_000_000_000_000_000n),
@@ -48,7 +51,7 @@ export class EnvError extends Error {
 /** Read only server settings; the deployer and CLI keys never enter the hosted configuration. */
 export function parseServerEnv(source: Readonly<Record<string, string | undefined>>): ServerEnv {
   const picked = Object.fromEntries([
-    "RELAYER_PRIVATE_KEY", "ROBINHOOD_RPC_URL", "SANTA_VAULT_ADDRESS", "SANTA_RELAYER_MAX_GAS_PRICE_WEI",
+    "SANTA_CHAIN", "RELAYER_PRIVATE_KEY", "ROBINHOOD_RPC_URL", "NEAR_RPC_URL", "SANTA_VAULT_ADDRESS", "SANTA_RELAYER_MAX_GAS_PRICE_WEI",
     "SANTA_RELAYER_DAILY_CAP_WEI", "SANTA_PUBLIC_ORIGIN", "SANTA_SQLITE_PATH", "SANTA_JUDGE_CODE", "UPSTASH_REDIS_REST_URL", "UPSTASH_REDIS_REST_TOKEN",
   ].map((key) => [key, source[key] === "" ? undefined : source[key]]));
   const result = schema.safeParse(picked);

@@ -170,7 +170,7 @@ export function ShareCard({ lineOne, lineTwo, meta }: { lineOne: string; lineTwo
           color: MUTED,
         }}
       >
-        STOCK GIFTS · ROBINHOOD TESTNET
+        TOKEN GIFTS · NEAR TESTNET
       </div>
     </div>
   );

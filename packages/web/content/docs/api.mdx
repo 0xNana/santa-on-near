@@ -1,18 +1,12 @@
 ---
 title: API
-description: Santa’s active testnet endpoints.
+description: NEAR sponsored-claim endpoint.
 ---
 
-The server returns JSON with fixed error codes and does not include raw RPC errors. Rate limits, body limits, shared claim records and relayer spending limits apply.
+The active sponsored claim route is `POST /api/near/claim`. It accepts a strict JSON object with gift ID, secret, recipient account ID, issue timestamp, nonce, and NEP-413 signature. The route checks request origin and size, reads the gift from NEAR RPC, verifies the secret commitment and recipient key, and submits the claim through the server-only relayer.
 
-| Endpoint | Purpose |
-| --- | --- |
-| `GET /api/stocks` | Read the vault’s listed stock tokens, metadata and decimals. `priceUsd` is null because testnet stock tokens have no monetary value. |
-| `POST /api/quote` | Validate a held token quantity and wallet balance. The request is `{stock, usdAmount, wallet}`. The existing wire field `usdAmount` now carries stock token units. Success returns `{ok:true, step:"held", stock, usdAmount, amount}` with `amount` in raw units. |
-| `GET /api/gift/<id>` | Read gift state, token, amount and expiry from the vault. |
-| `POST /api/claim` | Validate the recipient’s signed claim and submit it through the sponsored relayer. |
-| `POST /api/judge` | Hand out a gift from the optional configured judge pool. Requires sign-in, a judge code, declaration and recipient signature. |
+Responses contain fixed error codes and never include raw RPC or signer errors. The request body and private claim key are not logged. Rate limiting is currently in-memory per server process.
 
-Quotes allow 1 to 100 stock token units, constrained by the token’s decimals. An unlisted token or insufficient balance is refused. The browser independently checks the quantity and builds its own vault approval and gift transaction.
+`GET /api/near/health` returns 200 when NEAR server settings are configured, the deployed contract responds, its relayer matches the server setting, and the signer is a registered full-access key of the relayer. Configuration, RPC, relayer mismatch, or key authorization failures return 503. Readiness does not prove sufficient balances.
 
-If the required deployment or server settings are missing, the API remains unavailable. No previous deployment is used as a fallback.
+The older `/api/claim`, `/api/quote`, `/api/stocks`, and `/api/judge` endpoints are part of the retained EVM implementation. They return 410 by default and require the explicit `SANTA_ENABLE_LEGACY_EVM_API=1` opt-in. Leave that unset on a NEAR deployment.

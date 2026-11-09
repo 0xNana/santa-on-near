@@ -8,3 +8,15 @@ export const robinhood = defineChain({
   rpcUrls: { default: { http: ["https://rpc.testnet.chain.robinhood.com"] } },
   blockExplorers: { default: { name: "Blockscout", url: "https://explorer.testnet.chain.robinhood.com" } },
 });
+
+export const nearTestnet = {
+  id: "testnet",
+  name: "NEAR Testnet",
+  rpcUrl: "https://rpc.testnet.near.org",
+  explorerUrl: "https://testnet.nearblocks.io",
+};
+
+export function getConfiguredNetwork(chain: string = process.env.SANTA_CHAIN ?? "near") {
+  if (chain === "near") return nearTestnet;
+  return robinhood;
+}

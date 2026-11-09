@@ -5,7 +5,7 @@ import type { NextConfig } from "next";
 
 // Local runs share the one repo-root .env with core and the agent. Vercel has no such file and sets
 // every variable in the project settings. This runs before Next collects NEXT_PUBLIC_ values, so
-// NEXT_PUBLIC_PRIVY_APP_ID reaches the browser bundle. Values already in the environment win.
+// NEXT_PUBLIC_NEAR_CONTRACT_ACCOUNT reaches the browser bundle. Values already in the environment win.
 const ROOT_ENV_FILE = fileURLToPath(new URL("../../.env", import.meta.url));
 if (existsSync(ROOT_ENV_FILE)) {
   try {
@@ -21,6 +21,11 @@ const CORE_SRC = fileURLToPath(new URL("../core/src/", import.meta.url));
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  // Meteor SDK 1.0.24 logs its generated access key during sign-in. Compile that dependency
+  // and remove debug console calls in both dev and production; retain errors and warnings.
+  // https://nextjs.org/docs/architecture/nextjs-compiler#remove-console
+  transpilePackages: ["@meteorwallet/sdk"],
+  compiler: { removeConsole: { exclude: ["error", "warn"] } },
   serverExternalPackages: ["ip-location-api"],
   outputFileTracingRoot: fileURLToPath(new URL("../../", import.meta.url)),
   // Verification builds point this at a second folder so they never touch the running dev server's.
@@ -40,6 +45,12 @@ const nextConfig: NextConfig = {
   webpack(config) {
     // Useful for verification on machines with little disk space; output is unchanged.
     if (process.env.SANTA_DISABLE_WEBPACK_CACHE === "1") config.cache = false;
+    config.module.rules.push({
+      test: /styles\.css$/,
+      include: fileURLToPath(new URL("../../node_modules/@near-wallet-selector/modal-ui/", import.meta.url)),
+      enforce: "pre",
+      use: [fileURLToPath(new URL("./loaders/wallet-selector-css.cjs", import.meta.url))],
+    });
     config.module.rules.push(
       {
         test: /\.[cm]?tsx?$/,
@@ -51,17 +62,6 @@ const nextConfig: NextConfig = {
       // copies that file, keys included, into the build output as an asset.
       { include: CORE_SRC, parser: { url: false } },
     );
-    // Privy imports Solana packages that are not installed, because Santa has no Solana wallets. Next
-    // 16 builds the client externals as an array, which makes the fix in Privy's own guide do
-    // nothing, so each package is pointed at an empty module instead.
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      "@solana/kit": false,
-      "@solana-program/system": false,
-      "@solana-program/token": false,
-      "@solana-program/memo": false,
-      "@farcaster/mini-app-solana": false,
-    };
     return config;
   },
   // C13: no redirects are configured anywhere, so nothing under /g/ can send the claim tab to

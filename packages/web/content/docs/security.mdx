@@ -1,14 +1,14 @@
 ---
 title: Security
-description: How Santa protects testnet gifts.
+description: Trust boundaries and limitations of Santa on NEAR Testnet.
 ---
 
-The claim key is generated locally and stored before a gift transaction is sent. The private link uses a URL fragment; keys are not sent to Santa’s API. The claim page removes the fragment before sign-in loads. The encrypted note is readable only with the gift key.
+The claim secret is generated in the browser, kept in the URL fragment, and hashed before it reaches the contract. The optional note is encrypted in the browser with AES-GCM; the contract stores only ciphertext. Gift records, token contracts, amounts, and transfers are public onchain.
 
-Gift signatures use the Santa EIP-712 domain, vault address and testnet chain ID. Approvals are exact. After sending, the client checks the actual transaction data and gift state before making a link. Recipient signatures bind claims to the chosen wallet.
+Sponsored claims require a NEP-413 signature bound to the configured contract, gift, recipient account, secret commitment, timestamp, and nonce. The optional callback URL may be absent, as with Meteor, or match the exact claim-page URL; other signed callback URLs are refused. The API verifies the signature and confirms the public key is currently a full-access key of that account. The relayer's NEAR key is server-only. The contract restricts claims to the configured relayer and marks each claim nonce used before scheduling a token transfer.
 
-The relayer has a gas ceiling and daily spend cap. Its key is separate from the owner and sender. Shared Upstash records protect claim attempts and rate limits across server instances; the memory store is for local development only.
+The claim transaction reveals the secret, so observers can decrypt the note after redemption. Session storage retains the recipient's secret for reloads in the current tab. The relayer is trusted to verify wallet ownership and may sponsor recipient token registration up to 0.1 testnet NEAR; allowlist only trusted tokens.
 
-SantaVault relies on each ERC-20’s transfer rules. Testnet stock tokens have no monetary value. The vault owner cannot withdraw tokens backing open gifts.
+The API enforces same-origin requests, a strict body limit, and a per-process request rate limit. The current rate limiter is not shared across instances; run one app instance or add distributed rate limiting before scaling.
 
-The retained escrow, signature, relayer and recovery tests cover the current flow. Deployment details are public on the testnet explorer; this is not an external audit.
+The Rust contract has local unit tests, but it has not received an external security audit. Keep this deployment on testnet and use test tokens only.
