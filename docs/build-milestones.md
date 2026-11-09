@@ -1,6 +1,6 @@
 # Build milestones and agent handoff
 
-The NEAR work is on local branch `codex/near-hackathon`, targeting the confirmed public repository [0xNana/santa-on-near](https://github.com/0xNana/santa-on-near). On 9 November 2026 GitHub reported that repository public but empty. These checkpoints organize the completed working tree on that date; they do not invent an earlier development chronology. Publication and remote CI remain pending.
+The NEAR work is on local branch `codex/near-hackathon`, targeting the confirmed public repository [0xNana/santa-on-near](https://github.com/0xNana/santa-on-near). On 9 November 2026, the human approved publication and all seven milestones were pushed to `main` at `2121b4f`. Both jobs in the [public CI run](https://github.com/0xNana/santa-on-near/actions/runs/42699958583) passed. These checkpoints organize the completed working tree on that date; they do not invent an earlier development chronology. [Public verification record](remote-ci.json).
 
 ## Review the contribution
 
@@ -19,8 +19,10 @@ git show --stat 5cb4ed9
 | `4f7792f` | Reproduction, CI and deployment tooling | Node 22 pin, read-only CI, explicit testnet deploy path, health checks and single-instance Fly configuration. Hosting is configured, not deployed. |
 | `8fc1720` | Existing legacy SQLite settings | Separate preservation of the prior working-tree timeout/NORMAL synchronization change; NORMAL has weaker power-loss durability than FULL. It does not store active NEAR gift state. |
 | `eb11136` | Public chain evidence and wallet video | Actual gift #2, final callback, balances, gas payer, replay result, 1:42 MP4, captions and private-data/export checks. Earlier EVM media is labeled legacy. |
+| `31660b3` | Judge and agent documentation | Canonical rules, milestone map, provenance and reproduction/evidence boundaries. |
+| `2121b4f` | Submission preparation | Filled public checklist and X draft; this first published head passed both CI jobs. |
 
-The documentation checkpoint adds this map, reproducible judge instructions, provenance, current rules and release boundaries. A following `docs(submission)` checkpoint contains the filled public submission checklist and human-reviewed X draft. Use the log above to identify their exact hashes; no self-referential commit hash is embedded in a file.
+The documentation checkpoint adds this map, reproducible judge instructions, provenance, current rules and release boundaries. A following `docs(submission)` checkpoint contains the filled public submission checklist and X draft for human review. Use the log above to identify their exact hashes; no self-referential commit hash is embedded in a file.
 
 The complete wallet/API migration and its dependency lockfile are one coupled build milestone. Splitting the SDK removal from the active UI migration would leave an intermediate checkout unable to install/build consistently. Source changes are not disguised as later documentation changes.
 
@@ -40,7 +42,7 @@ npm run near:contract:test
 npm run near:integration:test
 ```
 
-Results: 371 core tests, one CLI test, nine Rust tests, production build/type checking, lint, and the real local Sandbox 2.14.0 claim/refund integration pass. The production leak scan checked seven private values across 3,148 output files and passed. Audit: zero high/critical, 17 low and eight moderate findings, with reachability and disposition in [dependency-review.md](dependency-review.md). No remote CI result is claimed.
+Results: 371 core tests, one CLI test, nine Rust tests, production build/type checking, lint, and the real local Sandbox 2.14.0 claim/refund integration pass. The production leak scan checked seven private values across 3,148 output files and passed. Audit: zero high/critical, 17 low and eight moderate findings, with reachability and disposition in [dependency-review.md](dependency-review.md). The later published milestone head `2121b4f` also passed both remote CI jobs; [the record](remote-ci.json) names the exact tested head.
 
 The first restricted Node 22 build could not read its TypeScript child-process output; the unrestricted retry completed. The isolated build directory did not replace the running demo server. No test was skipped or threshold reduced.
 
@@ -49,7 +51,7 @@ The first restricted Node 22 build could not read its TypeScript child-process o
 1. Read [the public submission checklist](../submission.md), [README](../README.md), [judge walkthrough](judges.md) and canonical [HACKATHON.md](../HACKATHON.md). `HACKATHON (1).md` preserves the originally supplied copy, including its malformed pasted lines; it is not the canonical rules snapshot.
 2. Review the active boundaries: `packages/contracts/near/src/lib.rs`, `packages/core/src/near-relayer.ts`, `near-claim-policy.ts`, the `/api/near` routes, and `packages/web/components/near`. The old CLI/Solidity/Privy flows are legacy.
 3. Keep the real wallet evidence separate from the older local-key API test. The video uses a local production app; recipient token storage was already registered. Real testnet expiry-refund evidence remains absent. Sandbox refund success does not establish a public-testnet refund.
-4. Obtain the explicitly required push approval before publishing. Push the preserved ancestry to `main` in the empty confirmed repository, verify its exact remote head, and wait for both CI jobs. Do not rewrite or force-push the history.
+4. The approved milestone history is published to `main`, its baseline comparison is verified, and both CI jobs passed at `2121b4f`. Keep subsequent source changes tied to fresh validation; do not rewrite or force-push this history.
 5. The human publishes the X video and supplies its exact public post URL. Collect contact, size, payout and consent privately. Validate and show the exact payload before the single submission; follow the official retry/request-change rules.
 
 `npm run hackathon:check` is intentionally blocked until genuine refund/X evidence is recorded in `docs/near-evidence.json`. That is the project's stronger internal evidence gate, not a claim that the event mandates a refund receipt. Do not fabricate evidence or weaken the checker to manufacture readiness. Hosting is optional under event Q-012.

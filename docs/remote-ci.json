@@ -1,0 +1,31 @@
+{
+  "verifiedAt": "2026-11-09T21:15:05.276823+00:00",
+  "repository": "0xNana/santa-on-near",
+  "branch": "main",
+  "headSha": "2121b4f2571439d0ed71d75d4d9fd1164970556c",
+  "runId": 42699958583,
+  "runUrl": "https://github.com/0xNana/santa-on-near/actions/runs/42699958583",
+  "event": "push",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "name": "node",
+      "id": 129441733866,
+      "conclusion": "success"
+    },
+    {
+      "name": "contract",
+      "id": 129441733426,
+      "conclusion": "success"
+    }
+  ],
+  "baselineCommit": "042714b49ea38060eaf92e38ecf9b4dc25fe07a1",
+  "aheadOfBaseline": 7,
+  "behindBaseline": 0,
+  "anonymousVideo": {
+    "url": "https://raw.githubusercontent.com/0xNana/santa-on-near/main/demo/near-demo.mp4",
+    "httpStatus": 200,
+    "sizeBytes": 4004179
+  },
+  "scope": "This records the actual first published milestone head and its successful CI run. Subsequent documentation-only commits may follow without changing the validated application/tooling source."
+}

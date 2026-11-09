@@ -50,6 +50,6 @@
       "critical": 0
     }
   },
-  "remoteCI": "Not run: commits are not yet pushed.",
+  "remoteCI": "Later published milestone head 2121b4f passed both jobs; see docs/remote-ci.json. This file records the earlier local validation.",
   "scope": "Application, contract, dependency and tooling source match this commit. Evidence/documentation may be added afterward. No mainnet or further public testnet transactions were executed for these checks."
 }

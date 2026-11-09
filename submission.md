@@ -1,6 +1,6 @@
 # Santa — NEAR HACKATHON submission
 
-Prepared 9 November 2026. **Submission has not been sent.** The human confirmed **Santa**, **[0xNana/santa-on-near](https://github.com/0xNana/santa-on-near)**, **Open Innovation (`open`)**, and that this is the project's first submission.
+Updated 9 November 2026 after the approved GitHub push and passing CI. **Submission has not been sent.** The human confirmed **Santa**, **[0xNana/santa-on-near](https://github.com/0xNana/santa-on-near)**, **Open Innovation (`open`)**, and that this is the project's first submission.
 
 The [live rules](https://nearhackathon.com/HACKATHON.md) were fetched again and matched [HACKATHON.md](HACKATHON.md) byte-for-byte: SHA-256 `903794f4b656b456eaee087941517d024a33633641d167b90c3f060d381d9aed`. Recheck them immediately before submission. Deadline: **14 November 2026, 23:59 UTC / Accra time**. Judging starts 16 November; results by 18 November.
 
@@ -33,7 +33,7 @@ The confirmed track is **Open Innovation (`open`)**. Do not add Social Money, De
 | Field / decision | Actual value or status |
 | --- | --- |
 | `projectName` | **Santa** — confirmed by the human. |
-| `projectUrl` | **https://github.com/0xNana/santa-on-near** — confirmed; public on GitHub, but local commits still need an approved push. |
+| `projectUrl` | **https://github.com/0xNana/santa-on-near** — confirmed; seven milestones published to `main` at `2121b4f`. |
 | `tracks` | **`["open"]`** — confirmed. |
 | `idea` | Draft above; exact wording awaits human approval. |
 | `leadName` | Awaiting the human's chosen name; collect privately, 2–80 characters. Do not infer it from a GitHub username. |
@@ -61,8 +61,8 @@ Contact notice, verbatim:
 - [x] MIT `LICENSE` and third-party/demo credits included.
 - [x] Reproducible README, judge walkthrough, locked dependencies and Node 22 instructions included.
 - [x] Real wallet-to-wallet NEAR video and public chain proof recorded; private link/credential frames excluded.
-- [ ] Obtain explicit push approval and publish the milestone history to the confirmed repository's `main` branch. Then confirm the exact remote head and that judges can open the source, video and comparison without authentication.
-- [ ] Verify both GitHub Actions jobs on the published head. Local success is recorded; no remote CI success is claimed.
+- [x] Explicit push approval received; seven milestones published to `main` at `2121b4f2571439d0ed71d75d4d9fd1164970556c`. Public source/comparison verified and anonymous video download returned HTTP 200.
+- [x] Both `node` and `contract` jobs passed on the published milestone head: [NEAR validation run](https://github.com/0xNana/santa-on-near/actions/runs/42699958583). [Public CI evidence](docs/remote-ci.json) records the exact head and jobs.
 - [ ] Human reviews the X draft, attaches the NEAR video, publishes it publicly with **@NEARProtocol** and **#NEARHackathon**, and provides the exact post URL.
 - [ ] Human approves the description and supplies name, email, team size and mainnet payout account privately.
 - [ ] Read the contact notice and obtain explicit consent.
@@ -94,7 +94,7 @@ These checks support review; distinguish our own quality gate from official elig
 
 ## Publication and submission handoff
 
-After explicit approval, the prepared repository publication is a normal, non-forced push of the preserved history:
+The human approved publication, and this normal, non-forced push published all seven milestones successfully:
 
 ```sh
 git push --set-upstream origin codex/near-hackathon:main
