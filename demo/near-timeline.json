@@ -1,0 +1,109 @@
+{
+  "durationSeconds": 102,
+  "chapters": [
+    {
+      "chapter": "intro",
+      "startSeconds": 0,
+      "endSeconds": 5,
+      "caption": "Santa \u2014 a gift in one link.",
+      "source": "Title/credits card",
+      "confirmationWaitsShortened": false
+    },
+    {
+      "chapter": "home",
+      "startSeconds": 5,
+      "endSeconds": 12,
+      "caption": "Make a token gift feel personal.",
+      "source": "Actual browser capture",
+      "confirmationWaitsShortened": false
+    },
+    {
+      "chapter": "how",
+      "startSeconds": 12,
+      "endSeconds": 18,
+      "caption": "Choose a token. Add a note. Share a private link.",
+      "source": "Actual browser capture",
+      "confirmationWaitsShortened": false
+    },
+    {
+      "chapter": "fill",
+      "startSeconds": 18,
+      "endSeconds": 26,
+      "caption": "Create a fresh gift of 25 valueless TEST tokens.",
+      "source": "Actual browser capture",
+      "confirmationWaitsShortened": false
+    },
+    {
+      "chapter": "review",
+      "startSeconds": 26,
+      "endSeconds": 32,
+      "caption": "Add an encrypted note and choose an expiry.",
+      "source": "Actual browser capture",
+      "confirmationWaitsShortened": false
+    },
+    {
+      "chapter": "deposit",
+      "startSeconds": 32,
+      "endSeconds": 44,
+      "caption": "The sender signs the NEAR Testnet deposit in Meteor.",
+      "source": "Actual browser capture",
+      "confirmationWaitsShortened": true
+    },
+    {
+      "chapter": "recipient",
+      "startSeconds": 44,
+      "endSeconds": 52,
+      "caption": "The private link opens the gift and its personal note.",
+      "source": "Actual browser capture",
+      "confirmationWaitsShortened": false
+    },
+    {
+      "chapter": "connected",
+      "startSeconds": 52,
+      "endSeconds": 58,
+      "caption": "Connect recipient.santa-gifts.testnet to claim.",
+      "source": "Actual browser capture",
+      "confirmationWaitsShortened": false
+    },
+    {
+      "chapter": "message",
+      "startSeconds": 58,
+      "endSeconds": 69,
+      "caption": "The recipient authorizes this claim with NEP-413.",
+      "source": "Actual browser capture",
+      "confirmationWaitsShortened": true
+    },
+    {
+      "chapter": "claim",
+      "startSeconds": 69,
+      "endSeconds": 76,
+      "caption": "The relayer submits the claim. The gift is delivered.",
+      "source": "Actual browser capture",
+      "confirmationWaitsShortened": true
+    },
+    {
+      "chapter": "confirmed",
+      "startSeconds": 76,
+      "endSeconds": 83,
+      "caption": "25 TEST received. No NEAR spent by the recipient.",
+      "source": "Actual browser capture",
+      "confirmationWaitsShortened": false
+    },
+    {
+      "chapter": "proof",
+      "startSeconds": 83,
+      "endSeconds": 95,
+      "caption": "Final callback: true. A repeated claim returns HTTP 409.",
+      "source": "RPC verification card",
+      "confirmationWaitsShortened": false
+    },
+    {
+      "chapter": "outro",
+      "startSeconds": 95,
+      "endSeconds": 102,
+      "caption": "Santa. Built at NEAR HACKATHON. NEAR Testnet only.",
+      "source": "Title/credits card",
+      "confirmationWaitsShortened": false
+    }
+  ]
+}

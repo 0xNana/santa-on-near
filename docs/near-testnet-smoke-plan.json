@@ -1,0 +1,59 @@
+{
+  "networkId": "testnet",
+  "status": "approved-and-verified",
+  "purpose": "Verify one real testnet gift through the production claim API; not a substitute for a genuine browser-wallet demo.",
+  "sender": "sender.santa-gifts.testnet",
+  "recipient": "recipient.santa-gifts.testnet",
+  "relayer": "relayer.santa-gifts.testnet",
+  "escrow": "gifts.santa-gifts.testnet",
+  "token": "token.santa-gifts.testnet",
+  "giftAmountRaw": "25",
+  "tokenDecimals": 0,
+  "storageMinimumYoctoNear": "1250000000000000000000",
+  "actions": [
+    {
+      "signer": "sender.santa-gifts.testnet",
+      "receiver": "token.santa-gifts.testnet",
+      "method": "storage_deposit",
+      "condition": "Only if escrow is not registered",
+      "args": {
+        "account_id": "gifts.santa-gifts.testnet",
+        "registration_only": true
+      },
+      "depositYoctoNear": "1250000000000000000000"
+    },
+    {
+      "signer": "sender.santa-gifts.testnet",
+      "receiver": "token.santa-gifts.testnet",
+      "method": "ft_transfer_call",
+      "amount": "25",
+      "depositYoctoNear": "1",
+      "terms": "Next available gift ID, random secret commitment, seven-day expiry, fixed non-personal test note."
+    },
+    {
+      "signer": "recipient.santa-gifts.testnet",
+      "method": "NEP-413 offchain authorization",
+      "note": "Signed locally with this dedicated test account key; no wallet UI is claimed."
+    },
+    {
+      "signer": "relayer.santa-gifts.testnet",
+      "method": "Production sponsored-claim API",
+      "note": "Register recipient if necessary, then claim 25 units to recipient; maximum registration 0.1 testnet NEAR."
+    }
+  ],
+  "checks": [
+    "Wrong secret refused without relayer spending",
+    "Gift reaches Claimed with recipient account",
+    "Recipient token balance increases by exactly 25",
+    "Escrow token balance returns to its prior level",
+    "Recipient pays no NEAR gas",
+    "Replaying the original claim is refused without another payout"
+  ],
+  "notIncluded": [
+    "No mainnet transaction",
+    "No public hosting or repository push",
+    "No X post or submission",
+    "No second gift or delayed refund transaction"
+  ],
+  "evidence": "docs/near-testnet-smoke.json"
+}

@@ -1,0 +1,55 @@
+{
+  "verifiedAt": "2026-11-09T21:04:57.248792+00:00",
+  "sourceCommit": "8fc17204bf4a3439d02bb96ca78be84d5d9844f1",
+  "runtime": "Node 22.23.4",
+  "rust": "1.99.1",
+  "checks": {
+    "cliTests": {
+      "passed": 1
+    },
+    "coreTests": {
+      "files": 30,
+      "passed": 371
+    },
+    "webLint": "passed",
+    "productionBuild": {
+      "result": "passed",
+      "output": ".next-submission",
+      "sandboxRetry": "Initial restricted execution truncated the TypeScript child-process output; the unrestricted production build completed successfully."
+    },
+    "contractFormatting": "passed",
+    "rustUnitTests": {
+      "passed": 9
+    },
+    "sandboxIntegration": {
+      "result": "passed",
+      "version": "2.14.0",
+      "coverage": [
+        "custody",
+        "failed-transfer recovery",
+        "nonce replay",
+        "claim",
+        "private callback",
+        "stale-ID deposit return",
+        "expiry",
+        "refund",
+        "balance conservation"
+      ]
+    },
+    "productionLeakScan": {
+      "result": "passed",
+      "privateValues": 7,
+      "filesScanned": 3148
+    },
+    "dependencyAudit": {
+      "gate": "high",
+      "result": "passed",
+      "low": 17,
+      "moderate": 8,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "remoteCI": "Not run: commits are not yet pushed.",
+  "scope": "Application, contract, dependency and tooling source match this commit. Evidence/documentation may be added afterward. No mainnet or further public testnet transactions were executed for these checks."
+}

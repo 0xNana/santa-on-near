@@ -1,0 +1,51 @@
+1
+00:00:00,000 --> 00:00:05,000
+Santa — a gift in one link.
+
+2
+00:00:05,000 --> 00:00:12,000
+Make a token gift feel personal.
+
+3
+00:00:12,000 --> 00:00:18,000
+Choose a token. Add a note. Share a private link.
+
+4
+00:00:18,000 --> 00:00:26,000
+Create a fresh gift of 25 valueless TEST tokens.
+
+5
+00:00:26,000 --> 00:00:32,000
+Add an encrypted note and choose an expiry.
+
+6
+00:00:32,000 --> 00:00:44,000
+The sender signs the NEAR Testnet deposit in Meteor.
+
+7
+00:00:44,000 --> 00:00:52,000
+The private link opens the gift and its personal note.
+
+8
+00:00:52,000 --> 00:00:58,000
+Connect recipient.santa-gifts.testnet to claim.
+
+9
+00:00:58,000 --> 00:01:09,000
+The recipient authorizes this claim with NEP-413.
+
+10
+00:01:09,000 --> 00:01:16,000
+The relayer submits the claim. The gift is delivered.
+
+11
+00:01:16,000 --> 00:01:23,000
+25 TEST received. No NEAR spent by the recipient.
+
+12
+00:01:23,000 --> 00:01:35,000
+Final callback: true. A repeated claim returns HTTP 409.
+
+13
+00:01:35,000 --> 00:01:42,000
+Santa. Built at NEAR HACKATHON. NEAR Testnet only.

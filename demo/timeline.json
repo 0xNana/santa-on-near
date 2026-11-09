@@ -1,0 +1,104 @@
+[
+  {
+    "start": 0,
+    "end": 5,
+    "label": "SANTA / A GIFT IN ONE LINK",
+    "caption": "Stock gifting, made personal."
+  },
+  {
+    "start": 5,
+    "end": 13,
+    "label": "01 / MEET SANTA",
+    "caption": "A thoughtful gift starts with someone you love."
+  },
+  {
+    "start": 13,
+    "end": 17,
+    "label": "02 / THREE SIMPLE STEPS",
+    "caption": "Choose a token, add a note, and share a private link."
+  },
+  {
+    "start": 17,
+    "end": 21,
+    "label": "03 / CONNECTED TEST WALLET",
+    "caption": "A dedicated test wallet connects to the real Santa app."
+  },
+  {
+    "start": 21,
+    "end": 24,
+    "label": "04 / CHOOSE THE QUANTITY",
+    "caption": "Pick AMD. Choose 1 valueless test token."
+  },
+  {
+    "start": 24,
+    "end": 31,
+    "label": "05 / MAKE IT PERSONAL",
+    "caption": "Your note appears in the gift preview as you type."
+  },
+  {
+    "start": 31,
+    "end": 35,
+    "label": "06 / REVIEW THE GIFT",
+    "caption": "Set a 30-day expiry. Check the quantity and personal note."
+  },
+  {
+    "start": 35,
+    "end": 56,
+    "label": "07 / WRAP IT ONCHAIN",
+    "caption": "Real wallet signatures, token approval, and deposit into SantaVault."
+  },
+  {
+    "start": 56,
+    "end": 62,
+    "label": "08 / COPY THE PRIVATE LINK",
+    "caption": "The real gift is ready. The claim key stays hidden."
+  },
+  {
+    "start": 62,
+    "end": 68,
+    "label": "09 / OPEN THE GIFT LINK",
+    "caption": "The recipient page loads the actual onchain AMD gift."
+  },
+  {
+    "start": 68,
+    "end": 72,
+    "label": "10 / GOOGLE OR EMAIL",
+    "caption": "This is the real sign-in entry. This recording uses a test-wallet API claim next."
+  },
+  {
+    "start": 72,
+    "end": 77,
+    "label": "11 / LIVE CLAIM THROUGH THE SANTA CLIENT",
+    "caption": "Real API claim with a dedicated test wallet. No sign-in is simulated."
+  },
+  {
+    "start": 77,
+    "end": 84,
+    "label": "12 / REAL CLAIM RESULT",
+    "caption": "Confirmed receipt, token delivery, and the decrypted personal note."
+  },
+  {
+    "start": 84,
+    "end": 90,
+    "label": "13 / THE APP CONFIRMS THE CLAIM",
+    "caption": "Reloading the actual gift now shows that it has been opened."
+  },
+  {
+    "start": 90,
+    "end": 99,
+    "label": "14 / VERIFY THE CLAIM",
+    "caption": "The explorer confirms success and delivery of 1 AMD test token."
+  },
+  {
+    "start": 99,
+    "end": 107,
+    "label": "15 / BALANCES VERIFIED",
+    "caption": "Recipient: 0 to 1 AMD. Santa relayer paid the claim fee."
+  },
+  {
+    "start": 107,
+    "end": 113,
+    "label": "SANTA / MADE FOR THE JOY OF GIVING",
+    "caption": "Testnet tokens have no monetary value or equity ownership rights."
+  }
+]

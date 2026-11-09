@@ -1,0 +1,64 @@
+{
+  "networkId": "testnet",
+  "verifiedAt": "2026-11-09T11:22:18.395Z",
+  "funding": "Primary funded by free testnet faucet; subaccounts funded from primary.",
+  "deploymentStatus": "accounts-created-contracts-not-deployed",
+  "accounts": [
+    {
+      "accountId": "santa-gifts.testnet",
+      "role": "primary-owner",
+      "balanceNear": "1.9544250523125",
+      "codeHash": "11111111111111111111111111111111",
+      "verifiedBlockHeight": 276913439,
+      "localKeyVerified": true,
+      "keyFileMode": "600"
+    },
+    {
+      "accountId": "gifts.santa-gifts.testnet",
+      "role": "gift-contract",
+      "balanceNear": "4.5",
+      "codeHash": "11111111111111111111111111111111",
+      "verifiedBlockHeight": 276913452,
+      "localKeyVerified": true,
+      "keyFileMode": "600"
+    },
+    {
+      "accountId": "relayer.santa-gifts.testnet",
+      "role": "claim-relayer",
+      "balanceNear": "1",
+      "codeHash": "11111111111111111111111111111111",
+      "verifiedBlockHeight": 276913465,
+      "localKeyVerified": true,
+      "keyFileMode": "600"
+    },
+    {
+      "accountId": "token.santa-gifts.testnet",
+      "role": "test-token",
+      "balanceNear": "2",
+      "codeHash": "11111111111111111111111111111111",
+      "verifiedBlockHeight": 276913477,
+      "localKeyVerified": true,
+      "keyFileMode": "600"
+    },
+    {
+      "accountId": "sender.santa-gifts.testnet",
+      "role": "demo-sender",
+      "balanceNear": "0.5",
+      "codeHash": "11111111111111111111111111111111",
+      "verifiedBlockHeight": 276913488,
+      "localKeyVerified": true,
+      "keyFileMode": "600"
+    },
+    {
+      "accountId": "recipient.santa-gifts.testnet",
+      "role": "demo-recipient",
+      "balanceNear": "0.01",
+      "codeHash": "11111111111111111111111111111111",
+      "verifiedBlockHeight": 276913500,
+      "localKeyVerified": true,
+      "keyFileMode": "600"
+    }
+  ],
+  "snapshotNote": "Balances and empty code reflect account provisioning before deployment; see near-testnet-deployment.json for verified contract deployment state.",
+  "currentDeploymentEvidence": "near-testnet-deployment.json"
+}

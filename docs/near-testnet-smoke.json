@@ -1,0 +1,192 @@
+{
+  "networkId": "testnet",
+  "rpcUrl": "https://rpc.testnet.near.org",
+  "status": "verified",
+  "startedAt": "2026-11-09T11:58:44.570Z",
+  "accounts": {
+    "sender": "sender.santa-gifts.testnet",
+    "recipient": "recipient.santa-gifts.testnet",
+    "relayer": "relayer.santa-gifts.testnet",
+    "escrow": "gifts.santa-gifts.testnet",
+    "token": "token.santa-gifts.testnet"
+  },
+  "amountRaw": "25",
+  "tokenDecimals": 0,
+  "execution": {
+    "apiOrigin": "http://127.0.0.1:3102",
+    "server": "local Next.js production build .next-near-live",
+    "recipientAuthorization": "NEP-413 signed locally using dedicated test-account key; no browser wallet used",
+    "publicHosting": false,
+    "replayServer": "local Next.js standalone production build .next-near-resilient",
+    "readReliabilityFix": "Contract view queries retry transport failures and HTTP 502/503/504 once, with five-second timeout per attempt. Transaction submission is not retried by this helper."
+  },
+  "health": {
+    "status": 200,
+    "body": {
+      "ok": true,
+      "networkId": "testnet",
+      "contractId": "gifts.santa-gifts.testnet"
+    }
+  },
+  "before": {
+    "tokens": {
+      "sender": "1000000",
+      "recipient": "0",
+      "escrow": "0"
+    },
+    "near": {
+      "recipient": "10000000000000000000000",
+      "relayer": "1000000000000000000000000"
+    },
+    "accessKeyNonces": {
+      "recipient": "276913228000000",
+      "relayer": "276913199000000"
+    }
+  },
+  "transactions": [
+    {
+      "txHash": "HqhgighyqxtLeyzpML2J1XaEHVzRok37HRSk75SQQHVy",
+      "explorerUrl": "https://testnet.nearblocks.io/txns/HqhgighyqxtLeyzpML2J1XaEHVzRok37HRSk75SQQHVy",
+      "method": "storage_deposit"
+    },
+    {
+      "txHash": "3AeD2nFtgZ7aQhf1FkcQ7nRQNYHQMGaSWDtMD16xd582",
+      "explorerUrl": "https://testnet.nearblocks.io/txns/3AeD2nFtgZ7aQhf1FkcQ7nRQNYHQMGaSWDtMD16xd582",
+      "method": "ft_transfer_call"
+    },
+    {
+      "method": "claim_gift",
+      "txHash": "FGpEYRAs4j4twJKWJXLvAMFQTCCFwjxB2bbr9xQeMcUk",
+      "explorerUrl": "https://testnet.nearblocks.io/txns/FGpEYRAs4j4twJKWJXLvAMFQTCCFwjxB2bbr9xQeMcUk",
+      "via": "POST /api/near/claim"
+    }
+  ],
+  "checks": {
+    "custody": true,
+    "encryptedNoteRoundTrip": true,
+    "wrongSecret": {
+      "status": 403,
+      "body": {
+        "ok": false,
+        "error": "invalid_claim_secret"
+      },
+      "relayerBalanceUnchanged": true,
+      "relayerNonceUnchanged": true
+    },
+    "claim": {
+      "httpStatus": 200,
+      "callbackResult": true,
+      "status": "Claimed",
+      "recipientId": "recipient.santa-gifts.testnet",
+      "nonceConsumed": true,
+      "recipientTokenIncreaseRaw": "25",
+      "recipientNearBalanceUnchanged": true,
+      "recipientTransactionNonceUnchanged": true,
+      "recipientRegistrationSponsored": true,
+      "relayerTransactions": 2
+    },
+    "replay": {
+      "status": 409,
+      "body": {
+        "ok": false,
+        "error": "gift_not_open"
+      },
+      "relayerBalanceUnchanged": true,
+      "relayerNonceUnchanged": true,
+      "recipientBalanceUnchanged": true
+    }
+  },
+  "giftId": "1",
+  "expiresAtNs": "1794830341088373399",
+  "afterCreate": {
+    "tokens": {
+      "sender": "999975",
+      "recipient": "0",
+      "escrow": "25"
+    },
+    "near": {
+      "recipient": "10000000000000000000000",
+      "relayer": "1000000000000000000000000"
+    },
+    "accessKeyNonces": {
+      "recipient": "276913228000000",
+      "relayer": "276913199000000"
+    }
+  },
+  "interruptions": [
+    {
+      "stage": "claim via production HTTP API",
+      "error": "Network fetch failed before any confirmed claim; read-back showed Open gift, unregistered recipient, zero payout, and unchanged relayer balance/nonce",
+      "recoveredAt": "2026-11-09T15:02:28.987Z"
+    },
+    {
+      "stage": "verify claim",
+      "error": "Follow-up test checker used obsolete txStatus method; corrected to installed SDK viewTransactionStatus; no claim resubmitted",
+      "recoveredAt": "2026-11-09T15:04:39.852Z"
+    }
+  ],
+  "claimHttpResult": {
+    "status": 200,
+    "body": {
+      "ok": true,
+      "txHash": "FGpEYRAs4j4twJKWJXLvAMFQTCCFwjxB2bbr9xQeMcUk"
+    }
+  },
+  "afterClaim": {
+    "tokens": {
+      "sender": "999975",
+      "recipient": "25",
+      "escrow": "0"
+    },
+    "near": {
+      "recipient": "10000000000000000000000",
+      "relayer": "997891525011026799999999"
+    },
+    "accessKeyNonces": {
+      "recipient": "276913228000000",
+      "relayer": "276913199000002"
+    }
+  },
+  "replayAttempts": [
+    {
+      "status": 503,
+      "body": {
+        "ok": false,
+        "error": "near_rpc_unavailable"
+      },
+      "build": ".next-near-live",
+      "note": "Original replay attempt failed closed on intermittent RPC connectivity; followed by read-only retry hardening."
+    },
+    {
+      "status": 409,
+      "body": {
+        "ok": false,
+        "error": "gift_not_open"
+      },
+      "build": ".next-near-resilient"
+    }
+  ],
+  "after": {
+    "tokens": {
+      "sender": "999975",
+      "recipient": "25",
+      "escrow": "0"
+    },
+    "near": {
+      "recipient": "10000000000000000000000",
+      "relayer": "997891525011026799999999"
+    },
+    "accessKeyNonces": {
+      "recipient": "276913228000000",
+      "relayer": "276913199000002"
+    }
+  },
+  "verifiedAt": "2026-11-09T15:11:14.318Z",
+  "limitations": [
+    "Recipient NEP-413 authorization used a local dedicated test-account key, not browser wallet UI",
+    "API ran locally; no public-hosting verification",
+    "No real testnet expiry refund; local sandbox covers that path",
+    "Create/claim used .next-near-live; replay was verified on the rebuilt .next-near-resilient server after read-only RPC retry hardening",
+    "No repository push, X post, or hackathon submission"
+  ]
+}

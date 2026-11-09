@@ -1,0 +1,15 @@
+{
+  "durationSeconds": 102,
+  "dimensions": "1920x1080",
+  "frameRate": 30,
+  "videoCodec": "H.264/yuv420p",
+  "audioCodec": "AAC stereo 48kHz",
+  "decodeChecked": true,
+  "chapterContactSheetReviewed": true,
+  "privateLinkFramesExcluded": true,
+  "publicTextPrivateValueScan": "pass",
+  "audioMeanDb": -22.8,
+  "audioPeakDb": -8.0,
+  "sha256": "40fb2216f1a143becfa135e67517050aa8355bddccad5874d95df311445bb9df",
+  "sizeBytes": 4004179
+}

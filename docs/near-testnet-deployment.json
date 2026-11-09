@@ -1,0 +1,71 @@
+{
+  "networkId": "testnet",
+  "rpcUrl": "https://rpc.testnet.near.org",
+  "status": "deployed-and-initialization-verified",
+  "startedAt": "2026-11-09T11:44:52.072Z",
+  "deployments": [
+    {
+      "accountId": "token.santa-gifts.testnet",
+      "wasmSha256": "be98d4906146fb14224f70ecc1c5ae26c773decba832f0f657bc8bd1164d260a",
+      "onchainCodeHash": "Dq1dLX1uymaKatM9DW4uZir2Ey4vHNoB2bq1HRCD4NqX",
+      "txHash": "48nGUTJaDskdY2LATWPgPn587yoZnqHVHE1DBBHKyavv",
+      "explorerUrl": "https://testnet.nearblocks.io/txns/48nGUTJaDskdY2LATWPgPn587yoZnqHVHE1DBBHKyavv",
+      "initMethod": "new",
+      "initArgs": {
+        "owner_id": "sender.santa-gifts.testnet",
+        "total_supply": "1000000"
+      },
+      "verifiedAt": "2026-11-09T11:45:24.129Z"
+    },
+    {
+      "accountId": "gifts.santa-gifts.testnet",
+      "wasmSha256": "24cdc6243c5ae9fe7e1d94a77d6cba6ae9d3b97050bac25bbbd631880d35b983",
+      "onchainCodeHash": "3UffYyysEiFfjMsP9hXQHjRDvcKX5AAxWmqV6nf9KQLi",
+      "txHash": "pWfKrTpqysN9ZjJfXbA7qbRYq3a1LsdF7Yj9QWVgESb",
+      "explorerUrl": "https://testnet.nearblocks.io/txns/pWfKrTpqysN9ZjJfXbA7qbRYq3a1LsdF7Yj9QWVgESb",
+      "initMethod": "new",
+      "initArgs": {
+        "owner_id": "santa-gifts.testnet",
+        "relayer_id": "relayer.santa-gifts.testnet",
+        "allowed_tokens": [
+          "token.santa-gifts.testnet"
+        ]
+      },
+      "verifiedAt": "2026-11-09T11:45:42.450Z"
+    }
+  ],
+  "verifiedAt": "2026-11-09T11:46:05.276Z",
+  "verification": {
+    "giftConfig": {
+      "owner_id": "santa-gifts.testnet",
+      "relayer_id": "relayer.santa-gifts.testnet"
+    },
+    "allowedToken": "token.santa-gifts.testnet",
+    "nextGiftId": "1",
+    "firstGift": null,
+    "tokenMetadata": {
+      "spec": "ft-1.0.0",
+      "name": "Sandbox token",
+      "symbol": "TEST",
+      "icon": null,
+      "reference": null,
+      "reference_hash": null,
+      "decimals": 0
+    },
+    "totalSupply": "1000000",
+    "senderBalance": "1000000",
+    "giftFlowStatus": "create-and-sponsored-claim-verified-via-local-production-api",
+    "backendReadiness": {
+      "mode": "direct invocation of the production health handler",
+      "status": 200,
+      "result": {
+        "ok": true,
+        "networkId": "testnet",
+        "contractId": "gifts.santa-gifts.testnet"
+      },
+      "verifiedAt": "2026-11-09T11:47:26.382Z"
+    },
+    "giftFlowEvidence": "docs/near-testnet-smoke.json",
+    "giftFlowVerifiedAt": "2026-11-09T15:11:14.318Z"
+  }
+}

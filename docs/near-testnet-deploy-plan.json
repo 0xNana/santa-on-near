@@ -1,0 +1,30 @@
+{
+  "networkId": "testnet",
+  "status": "deployed-and-initialization-verified",
+  "ownerAccount": "santa-gifts.testnet",
+  "tokenDeployment": {
+    "accountId": "token.santa-gifts.testnet",
+    "wasm": "packages/contracts/near/target/wasm32-unknown-unknown/release/santa_test_token.wasm",
+    "sha256": "be98d4906146fb14224f70ecc1c5ae26c773decba832f0f657bc8bd1164d260a",
+    "initMethod": "new",
+    "initArgs": {
+      "owner_id": "sender.santa-gifts.testnet",
+      "total_supply": "1000000"
+    },
+    "note": "Valueless standard FT fixture for testnet demonstration, not a mainnet product asset."
+  },
+  "giftDeployment": {
+    "accountId": "gifts.santa-gifts.testnet",
+    "wasm": "packages/contracts/near/target/wasm32-unknown-unknown/release/santa_near.wasm",
+    "sha256": "24cdc6243c5ae9fe7e1d94a77d6cba6ae9d3b97050bac25bbbd631880d35b983",
+    "initMethod": "new",
+    "initArgs": {
+      "owner_id": "santa-gifts.testnet",
+      "relayer_id": "relayer.santa-gifts.testnet",
+      "allowed_tokens": [
+        "token.santa-gifts.testnet"
+      ]
+    }
+  },
+  "signing": "Separate local legacy key for each deployment account; no mainnet transactions."
+}

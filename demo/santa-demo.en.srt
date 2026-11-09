@@ -1,0 +1,67 @@
+1
+00:00:00,000 --> 00:00:05,000
+Stock gifting, made personal.
+
+2
+00:00:05,000 --> 00:00:13,000
+A thoughtful gift starts with someone you love.
+
+3
+00:00:13,000 --> 00:00:17,000
+Choose a token, add a note, and share a private link.
+
+4
+00:00:17,000 --> 00:00:21,000
+A dedicated test wallet connects to the real Santa app.
+
+5
+00:00:21,000 --> 00:00:24,000
+Pick AMD. Choose 1 valueless test token.
+
+6
+00:00:24,000 --> 00:00:31,000
+Your note appears in the gift preview as you type.
+
+7
+00:00:31,000 --> 00:00:35,000
+Set a 30-day expiry. Check the quantity and personal note.
+
+8
+00:00:35,000 --> 00:00:56,000
+Real wallet signatures, token approval, and deposit into SantaVault.
+
+9
+00:00:56,000 --> 00:01:02,000
+The real gift is ready. The claim key stays hidden.
+
+10
+00:01:02,000 --> 00:01:08,000
+The recipient page loads the actual onchain AMD gift.
+
+11
+00:01:08,000 --> 00:01:12,000
+This is the real sign-in entry. This recording uses a test-wallet API claim next.
+
+12
+00:01:12,000 --> 00:01:17,000
+Real API claim with a dedicated test wallet. No sign-in is simulated.
+
+13
+00:01:17,000 --> 00:01:24,000
+Confirmed receipt, token delivery, and the decrypted personal note.
+
+14
+00:01:24,000 --> 00:01:30,000
+Reloading the actual gift now shows that it has been opened.
+
+15
+00:01:30,000 --> 00:01:39,000
+The explorer confirms success and delivery of 1 AMD test token.
+
+16
+00:01:39,000 --> 00:01:47,000
+Recipient: 0 to 1 AMD. Santa relayer paid the claim fee.
+
+17
+00:01:47,000 --> 00:01:53,000
+Testnet tokens have no monetary value or equity ownership rights.
