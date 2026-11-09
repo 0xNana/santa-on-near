@@ -24,7 +24,7 @@ export function createSqliteStore(file: string, now: () => number = Date.now): K
     closeSync(openSync(file, "a", 0o600));
     chmodSync(file, 0o600);
     db = new DatabaseSync(file);
-    db.exec("PRAGMA busy_timeout=5000; PRAGMA journal_mode=WAL; PRAGMA synchronous=FULL;");
+    db.exec("PRAGMA busy_timeout=15000; PRAGMA journal_mode=WAL; PRAGMA synchronous=NORMAL;");
     db.exec("CREATE TABLE IF NOT EXISTS santa_kv (k TEXT PRIMARY KEY, v TEXT NOT NULL, expires_at INTEGER); CREATE INDEX IF NOT EXISTS santa_expiry ON santa_kv(expires_at);");
   } catch {
     try { db?.close(); } catch { /* Preserve the fixed initialization error. */ }
