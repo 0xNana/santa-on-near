@@ -1,0 +1,44 @@
+name: NEAR validation
+on:
+  push:
+    branches: [main, codex/near-hackathon]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  node:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm audit --audit-level=high
+      - run: npm test --workspace=@santa/agent
+      - run: npm test --workspace=@santa/core -- --maxWorkers=2
+      - run: npm run lint --workspace=@santa/web
+      - run: npm run build --workspace=@santa/web
+        env:
+          SANTA_DISABLE_WEBPACK_CACHE: '1'
+  contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: rustup update stable --no-self-update
+      - run: rustup target add wasm32-unknown-unknown
+      - run: cargo fmt --manifest-path packages/contracts/near/Cargo.toml --check
+      - run: npm run near:contract:test
+      - run: npm run near:integration:test

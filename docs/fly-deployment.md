@@ -1,49 +1,39 @@
-# Deploy Santa on Fly.io
+# Deploy the NEAR app on Fly.io
 
-The root `fly.toml` runs Santa on one shared-CPU Machine with 1 GB RAM in London (`lhr`), HTTPS, an always-on server, a 1 GB `santa_data` volume at `/data`, and a readiness check against `/api/stocks`. SQLite stores claims, atomic locks, exact relayer counters and rate limits at `/data/santa.sqlite`. Redis is optional and is not used by this configuration.
+Deploy the NEAR contract first using the [NEAR checklist](near-migration.md). The root Dockerfile and `fly.toml` build the Wallet Selector app and check readiness at `/api/near/health`. The previous hosting configuration is retained in `fly.evm-legacy.toml` and `docs/fly-evm-legacy.md`; it is not the default deployment target.
 
-## Create the app and deploy
+## Configure
 
-Run commands from the repository root. The configured app name is `santa-robinhood-testnet`. If it is unavailable, change `app` and both `SANTA_PUBLIC_ORIGIN` values in `fly.toml` before proceeding.
+The public account settings in `fly.toml` now match the verified Santa testnet deployment. The Fly app name `santa-near-testnet` and its origin remain proposed hosting settings, not proof of an existing app. Confirm an available Fly app name and update `app` and both public-origin values before deployment. The configured fields are:
+
+- `build.args.NEXT_PUBLIC_NEAR_CONTRACT_ACCOUNT`: deployed Santa account.
+- `build.args.NEXT_PUBLIC_NEAR_TOKEN_ACCOUNT_IDS`: comma-separated allowlisted token contracts.
+- `env.NEAR_CONTRACT_ACCOUNT`: the same Santa account.
+- `env.NEAR_RELAYER_ACCOUNT`: the relayer configured in the contract.
+
+The Docker build rejects empty public contract, token, or origin values. Rebuild whenever public settings change. Keep exactly one Machine while rate limits and relayer transaction coordination are local to each instance. Gift state and replay nonces live in the NEAR contract; the active NEAR routes do not require a SQLite volume or the historical GeoIP database.
+
+Create the Fly app using the name you configured, validate the configuration, and provision the server-only `NEAR_RELAYER_SECRET_KEY` through Fly secrets. Import only that dedicated relayer key. Do not import the whole local `.env` or upload the contract owner/deployer keys. Never put the relayer key in build arguments or `NEXT_PUBLIC_` variables.
 
 ```sh
-fly auth login
-fly apps create santa-robinhood-testnet
-fly volumes create santa_data --app santa-robinhood-testnet --region lhr --size 1
+fly apps create YOUR_APP_NAME
 fly config validate --strict
-```
-
-Set **only** the dedicated `RELAYER_PRIVATE_KEY` as a Fly runtime secret. Never import the entire local `.env`: it also contains the owner/deployer key. This command passes just the relayer key over stdin without printing it or placing it in command arguments:
-
-```sh
-node --input-type=module -e 'import {readFileSync} from "node:fs"; import {parseEnv} from "node:util"; const {RELAYER_PRIVATE_KEY:k}=parseEnv(readFileSync(".env","utf8")); if(!/^0x[0-9a-fA-F]{64}$/.test(k??"")) process.exit(1); process.stdout.write(`RELAYER_PRIVATE_KEY=${k}\n`);' | fly secrets import --app santa-robinhood-testnet
+# Provision NEAR_RELAYER_SECRET_KEY through Fly's secret-management flow.
 fly deploy --ha=false
 fly scale count 1
 fly checks list
 ```
 
-The public vault and existing public Privy app ID are configured as build arguments and runtime settings. Add `https://santa-robinhood-testnet.fly.dev` to the Privy app's allowed origins and redirect settings. Rebuild after changing public build arguments. Optional judge-pool secrets must also be set through Fly secrets.
+No hosting app is created or deployed by the repository's contract deployment command.
 
-The Docker build uses an allowlist for its context. Local `.env` files, wallet keys, private gift files, contract broadcast/cache files and Git history are excluded. The image runs the standalone Next.js server as the `node` user; its entrypoint sets ownership of the mounted data directory before dropping privileges.
+The local production HTTP API passed the approved 25 TEST gift and sponsored-claim test, including recipient registration and wrong-secret/replay refusal; see `near-testnet-smoke.json`. That test does not establish public hosting or a browser-wallet demo.
 
-## Location checks
+## Readiness and smoke checks
 
-Fly requests use the proxy-provided `Fly-Client-IP` for client limits and a local `ip-location-api` database lookup for country and subdivision. Visitor IP addresses are not sent to a geolocation API. The code ignores client-supplied Vercel/Cloudflare country headers and does not treat `Fly-Region` as the visitor’s country. Unknown locations, lookup failures, restricted countries, and restricted Ukrainian subdivisions remain refused by the existing eligibility policy. Neither development geography override is enabled.
+`GET /api/near/health` returns 200 only when server settings parse, the Santa contract's `get_config` view responds, its relayer matches, and the configured signer is a registered full-access key of that relayer account. It returns a fixed 503 response on failure. This does not prove sufficient relayer balance or token funding; verify those with a complete gift transaction.
 
-GeoLite2 data is initialized under `/data/geoip` on first boot and refreshed automatically by the library; the first readiness check can take several minutes. `/api/stocks` returns ready only after the database and server dependencies initialize. This product includes GeoLite2 data created by [MaxMind](https://www.maxmind.com/), available under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) and the [GeoLite2 EULA](https://www.maxmind.com/en/geolite2/eula). See the [lookup library documentation](https://github.com/sapics/ip-location-api) and [Fly request-header documentation](https://docs.fly.io/networking/request-headers).
+After deployment, open `/send`, create a small testnet gift, and claim it from a separate recipient session. Confirm the contract's gift state and token balances, not merely a transaction hash. Repeat with an expired gift and refund. Keep testnet only until the flow has been externally reviewed.
 
-## Persistence and operations
+The catch-all historical EVM API returns 410 by default, even when old EVM environment variables exist. It requires `SANTA_ENABLE_LEGACY_EVM_API=1` to opt in; leave that unset on the NEAR app. The old CLI remains a legacy EVM client.
 
-Keep **exactly one Machine** with this volume. SQLite coordinates concurrent requests and multiple local connections using WAL and immediate write transactions. Independent volumes on additional Machines would not share claim locks, nonce counters or relayer spend. Use a shared database or explicit replication before scaling across Machines.
-
-Single-Machine deployments have brief downtime during updates and host failures. Fly volume snapshots are retained for 14 days; maintain a separate backup using SQLite's backup API or an offline copy after stopping the server. Do not copy only the main SQLite file while WAL writes are active. Restoring stale relayer records needs reconciliation with chain state before enabling claims.
-
-The `/api/stocks` health check verifies server configuration, persistent store initialization, the on-chain relayer match, and RPC token reads. A chain outage can make this readiness check fail.
-
-Sources: [Fly configuration](https://docs.fly.io/reference/configuration), [Next.js deployment](https://docs.fly.io/js/frameworks/nextjs), [request headers](https://docs.fly.io/networking/request-headers), [volumes](https://docs.fly.io/volumes/overview).
-
-## Trial accounts
-
-[Fly’s trial](https://fly.io/docs/about/free-trial/) stops Machines after five minutes even when this configuration sets automatic stopping to `off`; performance CPUs are also unavailable. The current demo intentionally remains on the trial. Add billing for continuous hosting.
-
-The first country/subdivision CSV conversion can exceed the trial window on a small shared CPU. Prepare the same `ip-location-api` cache outside the trial Machine and install the completed, checksum-verified files under `/data/geoip` before starting the app. Keep `ILA_FIELDS=country,region1` and the same library version on both systems. The cached startup reads these files directly; automatic refresh remains enabled. Transfer only the public geolocation dataset, never local `.env` files or wallet keys.
+The Docker context excludes `.env` files, wallet keys, private gift files, generated Next.js output, and Git history. The image runs the standalone Next.js server as the `node` user.
