@@ -57,4 +57,6 @@ The first restricted Node 22 build could not read its TypeScript child-process o
 
 ## Source cleanup
 
-The next cleanup milestones remove the superseded source and its dedicated tests/dependencies, retain every NEAR behavior test, move public wallet proof into `docs/`, and ignore/untrack local recordings. The approved historical video remains pinned to its original published commit. Source changed during cleanup, so the earlier CI and live demo prove their recorded snapshot; the cleaned tree receives separate build, regression, sandbox and browser smoke validation.
+The cleanup milestones remove the superseded source and its dedicated tests/dependencies, retain every NEAR behavior test, move public wallet proof into `docs/`, and ignore/untrack local recordings. The approved historical video remains pinned to its original published commit. Source changed during cleanup, so the earlier CI and live demo prove their recorded snapshot; the cleaned tree receives separate build, regression, sandbox and browser smoke validation.
+
+The source cleanup checkpoint is `cdd171d`. Its [validation record](cleanup-validation.json) reports 57 current tests, nine Rust tests, real Sandbox execution, browser checks, Docker build/runtime and the production leak scan. Historical suite sizes above are not the current test count.

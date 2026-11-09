@@ -50,3 +50,5 @@ The filled public checklist and X draft are in [submission.md](../submission.md)
 ## Cleanup evidence
 
 Public wallet proof and recording notes now live in `docs/near-wallet-proof.json` and `docs/near-wallet-demo.md`. The historical MP4 remains accessible at its immutable published commit. The cleaned tree is validated separately; the earlier 371-test count included retired-feature tests and is not the current suite size. All NEAR behavior tests are retained.
+
+The [cleanup validation record](cleanup-validation.json) reports 57 current tests, nine Rust tests, the real Sandbox, browser and non-root Docker checks, and 13 private values scanned across 2,340 build files. The current audit has 15 low and eight moderate findings, zero high/critical. A fresh clone no longer needs a local media directory.

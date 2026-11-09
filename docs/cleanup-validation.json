@@ -1,0 +1,92 @@
+{
+  "verifiedAt": "2026-11-09T21:45:27.071903+00:00",
+  "sourceCommit": "cdd171ddc986246a5b42918c5403b16523bdaa11",
+  "runtime": "Node 22.23.4",
+  "workspaces": [
+    "@santa/core",
+    "@santa/web"
+  ],
+  "lockfileEntries": {
+    "before": 1176,
+    "after": 979
+  },
+  "checks": {
+    "cleanInstall": "passed; 831 platform packages installed with ignore-scripts",
+    "coreTests": {
+      "passed": 57,
+      "files": 9,
+      "scope": "47 retained NEAR behavior tests plus 10 public-evidence/private-scan regressions; retired-feature tests removed with their source"
+    },
+    "lint": "passed",
+    "productionBuildAndTypes": "passed after clearing stale generated types for the deleted API fallback",
+    "rustFormatting": "passed",
+    "rustTests": {
+      "passed": 9
+    },
+    "sandbox": {
+      "result": "passed",
+      "version": "2.14.0",
+      "binarySource": "existing cached official binary, version checked",
+      "initialAttempt": "Fresh npm install removed the package-local cache; download exceeded the unchanged three-minute watchdog. Retry used documented NEAR_SANDBOX_BIN_PATH; assertions and watchdog unchanged."
+    },
+    "productionLeakScan": {
+      "result": "passed",
+      "privateValues": 13,
+      "files": 2340,
+      "numericBudgetRegression": "Credential-like and unknown numeric values remain checked; only clearly named public numeric budgets are excluded."
+    },
+    "compiledMeteorLogging": "requestSignIn inspected; no console.log/debug/info calls",
+    "audit": {
+      "high": 0,
+      "critical": 0,
+      "low": 15,
+      "moderate": 8
+    },
+    "docker": {
+      "build": "passed",
+      "image": "santa-near:cleanup",
+      "runtime": "passed",
+      "user": "node",
+      "uid": 1000,
+      "routes": {
+        "/": 200,
+        "/send": 200,
+        "/docs/contracts": 200,
+        "/g/2/opengraph-image": 200,
+        "/api/near/health": 503,
+        "/api/unsupported": 404
+      },
+      "credentials": "none; unconfigured health correctly fails closed"
+    },
+    "browser": {
+      "home": "passed",
+      "giftPreview": "passed",
+      "send": "passed",
+      "meteorSelector": "passed",
+      "contractDocs": "passed",
+      "mobileMissingSecret": "passed",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "failedRequests": [],
+      "transactionsSigned": 0
+    },
+    "publicVideoIntegrity": "actual immutable recording downloaded; size/header/SHA-256 passed",
+    "regressionMutation": "Removing the MP4-header guard fails its new test; original restored",
+    "staticImports": "no orphaned retained application modules",
+    "duplicateSources": "none found",
+    "freshClone": {
+      "branch": "main",
+      "localDemoDirectory": false,
+      "retiredPackages": false,
+      "submissionCheck": "Only the genuine missing docs/near-evidence.json gate remains blocked."
+    }
+  },
+  "distribution": {
+    "demoTracked": false,
+    "demoIgnored": true,
+    "localRecordingsPreserved": true,
+    "publicEvidence": "docs/near-wallet-proof.json",
+    "publicVideoRecord": "docs/near-video-checks.json"
+  },
+  "scope": "No new public-chain transaction, contract deployment, X post or hackathon submission was performed. Original wallet demo and remote CI evidence remain explicitly tied to their historical snapshots. Application/tooling source matches this commit; later documentation may record these results."
+}
