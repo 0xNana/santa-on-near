@@ -16,12 +16,15 @@ scratchpad/
 reference/
 
 # secrets
+submission*.json
+*.submission.json
 .env
 .env.*
 *.swp
 !.env.example
 
 node_modules/
+**/target/
 .next/
 .next-verify/
 bscscan-verify/
