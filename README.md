@@ -4,143 +4,96 @@
 
 # Santa
 
-**Send a thoughtful stock gift to someone you love.**
+**Send a little something to someone you love.**
 
-Santa is a Stock Token gifting app on Robinhood Chain Testnet. Choose a token you already hold, add a personal note, and share a private gift link. Your loved one opens the link, signs in with Google or email, and claims into an embedded wallet. Santa sponsors the claim's network fee.
+Santa is a NEAR Testnet gifting app for allowlisted NEP-141 tokens. A sender escrows tokens in the Santa contract, adds an optional note encrypted in their browser, and shares a private claim link. The recipient connects a NEAR wallet; Santa sponsors the claim transaction. An unclaimed gift can be refunded by its sender after expiry.
 
-Built for birthdays, milestones, and everyday generosity, Santa makes an onchain gift feel personal and approachable.
+## Problem and NEAR's role
 
-[Testnet demo](https://santa-robinhood-testnet.fly.dev) · [Architecture](ARCHITECTURE.md) · [Deployment guide](docs/fly-deployment.md)
+A small token gift can require the recipient to fund gas and register with the token before receiving it. Santa lets the sender create a gift now and the recipient choose a NEAR account at redemption. The relayer pays gas and token registration, while the Rust contract holds the gift, prevents duplicate payouts, enforces expiry, and lets the sender recover unclaimed tokens. NEAR account keys authorize the recipient; NEP-141/145 supply token transfers and storage registration. The relayer is trusted to verify the recipient's signature, so this is not a claim of trustless or permanently private delivery.
 
-> **Testnet only.** Gifts use testnet Stock Tokens with no monetary value or ownership rights in the referenced companies. Santa is independent and is not affiliated with or endorsed by Robinhood. The demo uses a Fly.io trial, which stops Machines after five minutes; availability is limited.
+## Status and hackathon fit
 
-## Features
+The active `/send` and `/g/<id>` flows target NEAR Testnet. **Open Innovation (`open`) is the recommended primary track**, subject to the team's final choice. Santa's current feature is personal token gifting; it does not yet implement the community treasury, shared-budget, or reputation workflows emphasized by Social Money. No DAO, Intents, private inference, or agent-commerce integration is claimed. Testnet-only projects and custom NEAR contracts are eligible under the [event rules](https://nearhackathon.com/HACKATHON.md).
 
-- **Private gift links:** wrap an existing token holding and share it with a loved one.
-- **Personal notes:** include an encrypted message with each gift.
-- **Simple claiming:** Google or email sign-in creates an embedded wallet through Privy.
-- **Sponsored claims:** the relayer pays the recipient's claim fee in test ETH.
-- **Expiry and refunds:** choose a 7-, 30-, or 90-day expiry; the original sender can request a refund after an unclaimed gift expires.
-- **Web and CLI:** send from the browser or a dedicated CLI wallet.
+**A live NEAR Testnet gift and sponsored claim are verified.** The escrow is `gifts.santa-gifts.testnet`; its allowlisted token is `token.santa-gifts.testnet`. Gift #1 transferred 25 valueless TEST units from `sender.santa-gifts.testnet` to `recipient.santa-gifts.testnet` through the local production claim API. The relayer paid recipient registration and gas; the recipient spent no NEAR. Wrong-secret and replay requests were refused without relayer spending. See the [create receipt](https://testnet.nearblocks.io/txns/3AeD2nFtgZ7aQhf1FkcQ7nRQNYHQMGaSWDtMD16xd582), [claim receipt](https://testnet.nearblocks.io/txns/FGpEYRAs4j4twJKWJXLvAMFQTCCFwjxB2bbr9xQeMcUk), [balances and live-test evidence](docs/near-testnet-smoke.json), and [deployment verification](docs/near-testnet-deployment.json).
 
-The current vault supports **TSLA, AMD, AMZN, NFLX, and PLTR** testnet tokens. Gift quantities are **1–100 token units**, rather than dollar amounts. Santa transfers existing holdings; it does not purchase stocks or charge a wrapping fee. Senders pay test ETH for approval and gift creation.
+**The real two-wallet NEAR demo is recorded.** Gift #2 used the actual Meteor Wallet UI for the sender deposit and recipient NEP-413 authorization against the local production app. The recipient received 25 TEST, spent no NEAR, and a replay returned 409 without further spending. Watch the [1:42 NEAR video](demo/near-demo.mp4), read its [recording notes](demo/NEAR-README.md), and inspect the [public proof](demo/near-transaction-proof.json). Hosting, a real testnet expiry refund, and public submission remain pending. See [the judge walkthrough](docs/judges.md) and [submission readiness](docs/hackathon-readiness.md).
 
-## Stock Tokens and RWAs
+This is a major migration from the earlier Robinhood Chain Testnet product. The old Solidity contracts, EVM API, CLI and Robinhood-specific documentation remain in the repository as legacy material; they are not used by the active NEAR send and claim pages.
 
-Real-world assets (RWAs) are a broad category that includes onchain representations of financial assets such as stocks and bonds, as well as physical assets. See [Ethereum's RWA overview](https://ethereum.org/real-world-assets/).
+## Hackathon scope and provenance
 
-Robinhood describes its live **Stock Tokens** as tokenised debt securities that provide economic exposure to underlying shares or ETFs, without granting legal or beneficial rights in those underlying securities. Its approved terminology is **Stock Tokens**. See the [Stock Token documentation](https://docs.robinhood.com/chain/stock-tokens/) and [terminology requirements](https://docs.robinhood.com/chain/terms-of-service/).
+The review baseline for this NEAR migration is [`042714b`](https://github.com/0xNana/santa/tree/042714b), dated 8 November 2026. That baseline contains the earlier EVM application, visual design, stock-token escrow, CLI, and related documentation. This is a migration of an existing product; those baseline features are not presented as new NEAR work.
 
-Santa currently demonstrates this gifting experience using testnet tokens. These test assets should not be presented as actual company shares or as having real-world backing or monetary value.
+The NEAR contribution is the Rust NEP-141 escrow and asynchronous claim/refund state machine, Wallet Selector account/signature flow, sponsored NEAR claims, token registration, private-link recovery, NEAR hosting/configuration, and corresponding tests. The dedicated NEAR repository is [0xNana/santa-on-near](https://github.com/0xNana/santa-on-near). Its local `codex/near-hackathon` branch preserves the original EVM history and groups the migration into reviewable milestones; see [the build history guide](docs/build-milestones.md). Inspect the complete contribution with `git diff 042714b..HEAD` and `git log --reverse --oneline 042714b..HEAD`. These commits must be pushed before they are visible to judges. The public comparison will be [baseline to the NEAR branch](https://github.com/0xNana/santa-on-near/compare/042714b49ea38060eaf92e38ecf9b4dc25fe07a1...main) once that branch is published; it is not currently available. The [submission checklist](submission.md) records publication and remaining human decisions.
+
+## Libraries, assistance, and license
+
+Santa reuses Next.js, React, Tailwind CSS, Fumadocs, NEAR Wallet Selector/Meteor Wallet, near-api-js, near-sdk-rs, and NEAR Contract Standards. NEAR Sandbox is a development-only integration-test dependency. The earlier app also uses the dependencies listed in the workspace manifests, including retained EVM/Privy code. The existing Santa UI and EVM utilities are baseline reuse. Codex assisted with the NEAR migration, tests, documentation, and this readiness review; generated code is included in the same review scope. Source is [MIT licensed](LICENSE); third-party packages and historical demo audio retain their own licenses and attribution.
 
 ## How it works
 
-1. **Choose a gift.** Connect a funded sender wallet, select an available token and quantity, and add a note and expiry.
-2. **Wrap it.** Approve the exact token amount and deposit it into `SantaVault`. The browser saves the claim key before submission.
-3. **Share the link.** The claim key is carried in the URL fragment. Share the complete link directly with the recipient.
-4. **Claim it.** The recipient signs in and authorizes delivery to their wallet. The server validates the claim and the relayer submits the transaction.
-5. **Recover expired gifts.** If a gift expires unclaimed, its original sender can submit a refund transaction. Refunds are not automatic.
+1. Connect a NEAR Testnet wallet and choose a configured NEP-141 token.
+2. The browser creates a random claim secret, hashes it for the contract, encrypts the optional note, and submits `ft_transfer_call` to the allowlisted Santa contract.
+3. Santa stores the gift metadata and holds the transferred tokens. The complete claim secret stays in the URL fragment, which is not sent in the HTTP request.
+4. The recipient connects a NEAR Testnet wallet and signs a NEP-413 message binding the claim to that wallet, gift, secret commitment, nonce, and timestamp.
+5. The server verifies a full-access wallet signature and asks the configured relayer to register the recipient with the token if needed (up to 0.1 testnet NEAR), then submit the claim. The contract releases the token and the relayer pays testnet gas.
+6. After expiry, the original sender may request a refund. Refunds are not automatic.
 
-Anyone holding the complete gift link can claim it. Treat it as a secret. The server cannot recover a lost claim key.
+Anyone with the complete link can attempt to claim the gift. Keep it private. Losing the link means losing access to its secret.
 
-## Tech stack
+The recipient's secret is retained in session storage for the current tab so wallet sign-in and reloads can resume a claim. Sender links and pending sends are retained in local storage, scoped to the contract account. A reload recovers a pending link only when its sender, token, amount, and secret commitment match the onchain gift.
 
-| Layer | Technology |
-| --- | --- |
-| Web | Next.js, React, TypeScript, Tailwind CSS |
-| Authentication and wallets | Privy, viem |
-| Shared application logic | TypeScript, Zod |
-| Contracts | Solidity, OpenZeppelin, Foundry |
-| Persistence | SQLite for a single host, or Upstash Redis for multiple hosts |
-| Hosting | Fly.io, Docker |
+## Requirements
 
-## Repository structure
+- Node.js 22.22.2 or newer within the Node 22 line and npm (`nvm use` reads `.nvmrc`)
+- Rust/Cargo with `wasm32-unknown-unknown`
+- `near-cli-rs` and a NEAR Testnet account authorized to deploy the contract
+- A NEAR Testnet relayer account with a separate server-only key and enough testnet NEAR to sponsor claims
+- At least one NEP-141 Testnet token contract to allowlist and test balances for sending
 
-```text
-packages/
-  web/         Next.js app, API routes, and user documentation
-  core/        Shared validation, chain integration, and server services
-  agent/       Command-line gifting client
-  contracts/   SantaVault, deployment scripts, and Solidity tests
-docs/          Deployment records, release checks, and project guides
-ARCHITECTURE.md
-```
-
-## Getting started
-
-### Prerequisites
-
-- Node.js **22.x** and npm.
-- A Privy app configured for Robinhood Chain Testnet and your local origin.
-- Separate testnet deployer, relayer, and sender wallets, funded as needed with test ETH.
-- Testnet Stock Tokens for the sender, available from the [faucet](https://faucet.testnet.chain.robinhood.com/).
-- [Foundry](https://getfoundry.sh/) to deploy or test the contracts.
-
-### Install
+## Install
 
 ```sh
-git clone https://github.com/0xNana/santa.git
-cd santa
-npm ci
+git clone https://github.com/0xNana/santa-on-near.git
+cd santa-on-near
+npm ci --ignore-scripts
 cp .env.example .env
 ```
 
-The web app, shared server code, and CLI load the repository-root `.env`. Use [`.env.example`](.env.example) as the complete configuration reference. Never commit `.env` or wallet keys.
+Set `NEAR_CONTRACT_ACCOUNT`, `NEAR_OWNER_ACCOUNT`, `NEAR_RELAYER_ACCOUNT`, `NEAR_ALLOWLISTED_TOKEN_IDS`, `NEAR_RPC_URL`, and `SANTA_PUBLIC_ORIGIN` in the root `.env`. Set the matching `NEXT_PUBLIC_NEAR_CONTRACT_ACCOUNT` and comma-separated `NEXT_PUBLIC_NEAR_TOKEN_ACCOUNT_IDS` before building the web app. Only the server uses `NEAR_RELAYER_SECRET_KEY`; never prefix it with `NEXT_PUBLIC_` or commit it.
 
-### Configure and deploy a vault
-
-For an independent installation, set `DEPLOYER_PRIVATE_KEY`, `SANTA_RELAYER_ADDRESS`, and `SANTA_STOCK_ADDRESSES` in `.env`. The example includes the five testnet token addresses. Fund the deployer and relayer with test ETH, then run:
+The deployment account must already exist on NEAR Testnet, and `near-cli-rs` must have its deployment key configured in the local keychain. The deploy script deploys and initializes a fresh contract account; do not run it against an initialized account.
 
 ```sh
-./packages/contracts/install-deps.sh
-./packages/contracts/deploy.sh testnet
-```
-
-Set both vault address variables below to the deployed address. `RELAYER_PRIVATE_KEY` must belong to that vault's configured relayer. The demo vault requires its existing relayer; a new installation should use its own vault and keys.
-
-`SANTA_OWNER_ADDRESS` is optional. If it differs from the deployer, the designated owner must accept the two-step ownership handover.
-
-### Configure the app
-
-| Variable | Purpose |
-| --- | --- |
-| `ROBINHOOD_RPC_URL` | Testnet RPC; the example provides the public endpoint. |
-| `SANTA_VAULT_ADDRESS` | Vault address used by the server and CLI. |
-| `NEXT_PUBLIC_SANTA_VAULT_ADDRESS` | Same vault address, bundled into the browser at build time. |
-| `RELAYER_PRIVATE_KEY` | Dedicated server wallet that sponsors claims; must match the vault's relayer. |
-| `NEXT_PUBLIC_PRIVY_APP_ID` | Public Privy app identifier; configure allowed origins and the testnet. |
-| `SANTA_PUBLIC_ORIGIN` | App origin, such as `http://localhost:3000`. |
-| `SANTA_SQLITE_PATH` | Absolute path to a persistent SQLite database for a single host. |
-| `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` | Shared-store alternative to SQLite; configure both together. |
-| `SANTA_ALLOW_MEMORY_STORE` | Set to `1` only for local development without a persistent store. |
-| `SANTA_DEV_COUNTRY` | Local country override, such as `GH`; do not use on the hosted app. |
-
-Choose one storage option: SQLite, Upstash, or local development memory. Memory contents disappear when the process stops. Public `NEXT_PUBLIC_` settings require a rebuild after changes. Server wallet keys must never use that prefix.
-
-### Start locally
-
-```sh
+npm run near:contract:test
+npm run near:contract:deploy:testnet
 npm run dev --workspace=@santa/web
 ```
 
-Open [localhost:3000](http://localhost:3000). User documentation is available at `/docs`. Sending and claiming require the configured vault, Privy app, relayer, and store. Location and eligibility checks apply to the gifting flow.
+Open [localhost:3000](http://localhost:3000). A contract can be built without deployment using `npm run near:contract:build`.
 
-## CLI usage
+## Configuration
 
-Set `SANTA_AGENT_PRIVATE_KEY` to a dedicated sender test wallet in `.env`, separate from the deployer and relayer. Configure the same vault used by the app.
+| Variable | Purpose |
+| --- | --- |
+| `NEAR_NETWORK_ID` | `testnet` only. |
+| `NEAR_RPC_URL` | NEAR Testnet JSON-RPC endpoint (defaults to `https://rpc.testnet.near.org`). |
+| `NEAR_CONTRACT_ACCOUNT` | Deployed Santa contract account ID. |
+| `NEAR_OWNER_ACCOUNT` | Initial contract owner used by the deploy script. |
+| `NEAR_DEPLOY_KEYCHAIN` | `legacy` for `~/.near-credentials` or `os` for the operating-system keychain. |
+| `NEAR_RELAYER_ACCOUNT` | Account authorized by the contract to submit sponsored claims. |
+| `NEAR_RELAYER_SECRET_KEY` | Server-only private key belonging to the configured relayer account. |
+| `NEAR_MAX_SPONSORED_CLAIMS_PER_HOUR` | Maximum sponsored attempts per relayer/process/hour; defaults to 60. Failed attempts count. |
+| `NEAR_ALLOWLISTED_TOKEN_IDS` | Comma-separated NEP-141 contract IDs supplied to contract initialization. |
+| `NEXT_PUBLIC_NEAR_CONTRACT_ACCOUNT` | Public contract ID used by the browser; must match the deployment. |
+| `NEXT_PUBLIC_NEAR_TOKEN_ACCOUNT_IDS` | Comma-separated token IDs offered by the browser; each must be allowlisted onchain. |
+| `SANTA_PUBLIC_ORIGIN` | Exact public app origin used to reject cross-origin sponsored claims. |
 
-```sh
-npm run santa -- status
-npm run santa -- gift TSLA 5 --note "For your next chapter. With love." --days 30
-```
-
-The CLI asks for confirmation before sending; `--yes` skips that prompt. It saves private gift links with file mode `0600` under `gifts/46630/<vault>/`, and saves pending keys before submission. Use `status` to recover pending gifts. Keep these files private.
-
-See the [CLI guide](packages/web/content/docs/agent.mdx) for details.
+Use testnet accounts and assets only. Never deploy from a wallet holding mainnet funds.
 
 ## Development and verification
-
-Run these commands from the repository root:
 
 ```sh
 npm test
@@ -149,44 +102,36 @@ npm run typecheck --workspace=@santa/agent
 npm run typecheck --workspace=@santa/web
 npm run lint --workspace=@santa/web
 npm run build --workspace=@santa/web
-forge test --root packages/contracts
+npm run near:contract:test
+npm run near:contract:build
+npm run near:integration:test
+npm run hackathon:check
 ```
 
-Install the pinned contract dependencies with `./packages/contracts/install-deps.sh` before running Foundry tests. See [release checks](docs/release-checks.md) for recorded validation and remaining limitations.
+The Rust contract and current NEAR routes are the migration target. Foundry tests cover the retained legacy Solidity implementation, not the NEAR contract.
 
-## Network and deployment
+## Repository map
 
-| Setting | Value |
-| --- | --- |
-| Network | Robinhood Chain Testnet |
-| Chain ID | `46630` (`0xb626`) |
-| Gas token | Test ETH |
-| RPC | <https://rpc.testnet.chain.robinhood.com> |
-| Explorer | <https://explorer.testnet.chain.robinhood.com> |
-| Faucet | <https://faucet.testnet.chain.robinhood.com/> |
-| Demo vault | [`0xCBE6dF9722be9c40d18ed3d6263e42C74312C441`](https://explorer.testnet.chain.robinhood.com/address/0xCBE6dF9722be9c40d18ed3d6263e42C74312C441) |
+```text
+packages/web/                 Next.js app, NEAR Wallet Selector, send and claim flows
+packages/core/src/near*.ts     NEAR RPC and sponsored-claim verification
+packages/contracts/near/       Rust NEAR escrow contract
+packages/contracts/deploy-near-testnet.sh
+packages/contracts/src/        Legacy Robinhood/EVM Solidity contract
+```
 
-See [Robinhood's network documentation](https://docs.robinhood.com/chain/connecting/) and the [deployment record](docs/deployment-testnet.json) for token addresses, roles, and transaction hashes.
+## Security notes
 
-The root `Dockerfile` and `fly.toml` configure a single Fly Machine with a persistent volume for SQLite and the local geolocation database. Follow the [Fly deployment guide](docs/fly-deployment.md) for runtime secrets, build arguments, initialization, backups, and trial limitations. Keep deployer keys local; upload only the runtime secrets required by the hosted app.
+- NEAR contract state and token transfers are public. The note ciphertext and claim-secret hash are stored onchain; the decryption key is carried only in the link fragment.
+- Claim transactions reveal the secret and therefore the note's decryption key. Notes are private before redemption; observers can decrypt them after redemption.
+- The backend validates a NEP-413 signature against a public key registered to the recipient account before spending relayer gas.
+- The signing key must have full access. NEP-413 signatures may omit the optional callback URL (Meteor), or include the exact claim-page URL; other signed callback URLs are refused.
+- The owner funds Santa's contract-state storage; the sender pays any initial token registration for the escrow. The relayer sponsors recipient token registration up to 0.1 testnet NEAR per account/token pair. Only allowlist trusted token contracts.
+- The claim nonce is marked used onchain before token transfer; a failed transfer requires a fresh signed authorization.
+- Sponsored claim rate limits are currently in-memory per server process. Use a single application instance or add a shared limiter before running multiple replicas.
+- A single-process coordinator coalesces identical concurrent claims, rejects competing claims for a gift, serializes the relayer signer, and limits sponsored attempts across all IPs. Counters reset on restart; this is not a durable spending cap. Used nonces are checked onchain before funding token registration.
+- This code has not had an external security audit. Keep the system on testnet.
 
-## Security and limitations
+See [the NEAR deployment checklist](docs/near-migration.md) for the implemented interface, remaining testnet setup, and retained legacy entry points.
 
-- Keep claim links, pending keys, judge credentials, and wallet keys private.
-- Claim authorization is bound to the recipient wallet, gift, vault, and chain; a holder of the link can authorize their own wallet.
-- Notes are encrypted, while token transfers and gift state are public onchain.
-- Eligibility checks and relayer gas budgets can prevent a claim from proceeding.
-- The contract owner cannot withdraw tokens reserved for open gifts.
-- This repository targets Robinhood Chain Testnet. A live financial product would require separate asset, eligibility, and operational review.
-
-Read the [security guide](packages/web/content/docs/security.mdx) and [contract documentation](packages/web/content/docs/contracts.mdx) before operating a deployment.
-
-## Documentation
-
-- [Architecture and trust boundaries](ARCHITECTURE.md)
-- [User getting started guide](packages/web/content/docs/getting-started.mdx)
-- [API reference](packages/web/content/docs/api.mdx)
-- [Fly deployment](docs/fly-deployment.md)
-- [Release checks](docs/release-checks.md)
-- [Robinhood Chain migration notes](docs/robinhood-migration.md)
-- [Brand assets](docs/brand-assets.md)
+The local-chain integration test launches NEAR Sandbox 2.14.0, downloads the official node on first use, and uses only ephemeral localhost accounts. It needs no `.env`, public-chain funds, or wallet keys. `NEAR_SANDBOX_BIN_PATH` can point to an already installed official sandbox binary. The test fails on download/startup/assertion errors; it never skips chain execution. `hackathon:check` is expected to remain blocked until reviewed source and genuine public NEAR evidence are ready.
