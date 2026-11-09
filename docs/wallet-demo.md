@@ -1,6 +1,6 @@
 # Real browser-wallet demo validation
 
-**Completed on 9 November 2026:** gift #2 passed the real Meteor sender/recipient flow on the local production app at localhost:3104. See the [video and recording notes](../demo/NEAR-README.md) and [public evidence](../demo/near-transaction-proof.json). The commands below are a repeatable manual runbook; the recording used one isolated profile with an explicit sender disconnect and wallet switch.
+**Completed on 9 November 2026:** gift #2 passed the real Meteor sender/recipient flow on the local production app at localhost:3104. See the [video and recording notes](near-wallet-demo.md) and [public evidence](near-wallet-proof.json). The commands below are a repeatable manual runbook; the recording used one isolated profile with an explicit sender disconnect and wallet switch.
 
 Use the existing configured `.env`; do not replace it with `.env.example`. The accounts and contracts are already deployed. Never run deployment or initialization again for this test.
 
@@ -88,4 +88,4 @@ Record the actual sender wallet approval, recipient message-signing approval, fi
 
 Keep the real testnet expiry refund as a separate outstanding check; the UI's shortest expiry is seven days. Do not claim a live refund was demonstrated. The local sandbox already exercises expiry and refund.
 
-After reviewing the new video and evidence, the human publishes the X post with **@NEARProtocol** and **#NEARHackathon**, stating that Santa was built at NEAR HACKATHON. See `demo/near-recording-plan.md` for the draft. A localhost URL is not publicly accessible; attach the actual video if public hosting is unavailable. Publication and hackathon submission remain separate human actions.
+After reviewing the new video and evidence, the human publishes the X post with **@NEARProtocol** and **#NEARHackathon**, stating that Santa was built at NEAR HACKATHON. See the X draft in [submission.md](../submission.md). A localhost URL is not publicly accessible; attach the actual video if public hosting is unavailable. Publication and hackathon submission remain separate human actions.

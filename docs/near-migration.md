@@ -48,23 +48,13 @@ The claim is a bearer link, with recipient identity chosen at redemption. Do not
 8. Create a separate short-lived gift through the token CLI with an expiry at least one hour ahead. After expiry, connect the sender and refund. Verify `Refunded` and the sender's restored balance.
 9. Record contract/token IDs, create/claim/refund transaction links, and the tested commit in a new deployment record. Replace historical deployment references only with verified evidence.
 
-## Local verification — 9 November 2026
+## Verified deployment and current source
 
-- 349 core tests and one CLI test pass. One legacy recovery test timed out during a concurrent production build; it passes in isolation and the complete core suite passes with two workers, without changing timeouts or skipping tests.
-- Nine Rust tests, the locked release WASM build, Rust formatting, web lint, and the production build with TypeScript pass.
-- Production smoke checks pass for the homepage, send page, documentation, missing NEAR configuration, and disabled legacy API. Browser checks cover Wallet Selector opening, claim-link error states, and a 320px claim layout; the production browser console is clean.
-- The completed build's leak scan finds none of the six checked private environment values. Shell syntax, a mocked deployment run, and Fly's strict configuration validator pass. The mocked run does not deploy a contract.
-- These local checks used Node 26.13 on this workstation. The documented runtime and Docker base remain Node 22; a Docker image build was not performed here.
+The escrow `gifts.santa-gifts.testnet` and standard token fixture `token.santa-gifts.testnet` are deployed and initialized. Their code hashes and initialization receipts are in [near-testnet-deployment.json](near-testnet-deployment.json). Gift #1 exercised the production HTTP API with local test-account signatures and sponsored recipient registration; [the separate Meteor wallet run](near-wallet-demo.md) verifies gift #2 through actual wallet dialogs and final chain reads.
 
-The two approved contracts are now deployed and initialized on NEAR Testnet: escrow at `gifts.santa-gifts.testnet`, and the standard test-token fixture at `token.santa-gifts.testnet`. Their onchain code matches the approved WASM hashes. Owner, relayer, allowlist, next gift ID, empty initial gift state, 1,000,000-unit token supply, and sender balance are verified in `docs/near-testnet-deployment.json`. Public account provisioning is in `docs/near-testnet-accounts.json`; the approved artifacts and initialization arguments are in `docs/near-testnet-deploy-plan.json`. Gift #1 now has verified live create and sponsored-claim receipts in `docs/near-testnet-smoke.json`, with a 25 TEST recipient balance increase, no recipient NEAR spend, and wrong-secret/replay refusal. Authorization was signed locally with a dedicated test-account key. A real expiry refund and genuine browser-wallet demo remain unverified. Contract views now retry a transport failure or HTTP 502/503/504 once, using a fresh five-second timeout; RPC contract errors, invalid data, and other HTTP errors are not retried. This helper never submits transactions.
+The current tree contains only the NEAR web app, four core NEAR modules, the Rust contract, and supporting tests/tooling. The former CLI, contracts, API fallback, unused UI, storage/geolocation backend and dependencies have been removed. Earlier source remains in the baseline history disclosed in README. Local historical checks are in [local-validation.json](local-validation.json); the original published milestone CI run is in [remote-ci.json](remote-ci.json). Cleanup validation is recorded separately so historical test counts are not presented as current.
 
-The later hackathon review adds a passing real local-chain test, attempt coordination/budgeting, usable-key readiness checks, and a dedicated branch. See `docs/hackathon-readiness.md` for the current results and remaining submission blockers. The historical Privy UI is now in `legacy/web`, and its SDK is no longer an active app dependency.
-
-## Retained legacy material
-
-Solidity, the EVM API/CLI, Privy components, EVM deployment records, and their dependencies remain for historical compatibility. They are not called by the active NEAR send/claim pages. The legacy web API returns 410 unless explicitly enabled with `SANTA_ENABLE_LEGACY_EVM_API=1`. `packages/contracts/deploy-evm-legacy.sh` is the explicit historical contract deployment entry point. Retiring that code and its dependencies is a separate cleanup; the old CLI is not a NEAR client.
-
-The root Dockerfile and `fly.toml` use NEAR build/runtime settings and `/api/near/health` readiness. Follow [the Fly deployment guide](fly-deployment.md) after deploying the contract. Historical Fly settings are retained separately in `fly.evm-legacy.toml`.
+The Docker image runs the standalone Next.js app as `node`, with no database volume, geolocation updater or privileged entrypoint. Follow [the Fly guide](fly-deployment.md) for optional hosting. The deploy script initializes fresh contract accounts; never rerun it against the already initialized demo escrow.
 
 ## Standards
 

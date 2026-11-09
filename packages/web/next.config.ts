@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 import { createMDX } from "fumadocs-mdx/next";
 import type { NextConfig } from "next";
 
-// Local runs share the one repo-root .env with core and the agent. Vercel has no such file and sets
+// Local runs load the one repo-root .env. Vercel has no such file and sets
 // every variable in the project settings. This runs before Next collects NEXT_PUBLIC_ values, so
 // NEXT_PUBLIC_NEAR_CONTRACT_ACCOUNT reaches the browser bundle. Values already in the environment win.
 const ROOT_ENV_FILE = fileURLToPath(new URL("../../.env", import.meta.url));
@@ -26,7 +26,6 @@ const nextConfig: NextConfig = {
   // https://nextjs.org/docs/architecture/nextjs-compiler#remove-console
   transpilePackages: ["@meteorwallet/sdk"],
   compiler: { removeConsole: { exclude: ["error", "warn"] } },
-  serverExternalPackages: ["ip-location-api"],
   outputFileTracingRoot: fileURLToPath(new URL("../../", import.meta.url)),
   // Verification builds point this at a second folder so they never touch the running dev server's.
   distDir: process.env.NEXT_DIST_DIR || ".next",
@@ -36,9 +35,6 @@ const nextConfig: NextConfig = {
   // The gift link's share image renders on request and reads its fonts from app/og at run time.
   outputFileTracingIncludes: {
     "/g/[id]/opengraph-image": ["./app/og/*"],
-    // The GeoIP updater runs in a child process, so tracing cannot see these runtime imports.
-    "/api/*": ["ip-location-api", "@fast-csv/parse", "ip-address", "dayjs", "yauzl", "pend"]
-      .map((name) => `../../node_modules/${name}/**/*`),
   },
   // Builds run on webpack, not Turbopack: core is TypeScript source imported by ".js" paths, which
   // Turbopack 16.4 cannot map to the ".ts" files and webpack's extensionAlias can.
@@ -58,9 +54,6 @@ const nextConfig: NextConfig = {
         exclude: /[\\/]node_modules[\\/]/,
         resolve: { extensionAlias: { ".js": [".ts", ".tsx", ".js"] } },
       },
-      // core's env.ts finds the repo-root .env with new URL(..., import.meta.url). Left on, webpack
-      // copies that file, keys included, into the build output as an asset.
-      { include: CORE_SRC, parser: { url: false } },
     );
     return config;
   },

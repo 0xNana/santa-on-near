@@ -12,10 +12,8 @@ import { parseEnv } from "node:util";
 const WEB_DIR = fileURLToPath(new URL("../", import.meta.url));
 const ROOT_ENV_FILE = fileURLToPath(new URL("../../../.env", import.meta.url));
 const DIST_DIR = process.env.NEXT_DIST_DIR || ".next-verify";
-const ADDRESS = /^0x[0-9a-fA-F]{40}$/;
 const HEX = /^0x[0-9a-fA-F]+$/;
-// The shortest secret core accepts is 8 characters (env.ts credential), so anything shorter is a
-// setting such as a price, a count or a flag, and would match unrelated text by chance.
+// Very short settings such as ports and flags would match unrelated output by chance.
 const MIN_SECRET_CHARS = 8;
 
 // A URL on this machine (http://localhost:3000 for the public origin in local runs) is no secret,
@@ -45,7 +43,7 @@ function readEnv() {
 
 // Each value is searched for as written. A hex value is also searched for without its 0x and in
 // any letter case, since a key can be printed either way.
-function needlesFor(env) {
+export function needlesFor(env) {
   const checked = [];
   const skipped = [];
   for (const [name, raw] of Object.entries(env)) {
@@ -56,10 +54,10 @@ function needlesFor(env) {
       && /^(?=.{2,64}$)[a-z0-9]+([._-][a-z0-9]+)*$/.test(value)) skipped.push(`${name} (public NEAR account)`);
     else if (name === "NEAR_ALLOWLISTED_TOKEN_IDS" && value.split(",").every((id) => /^(?=.{2,64}$)[a-z0-9]+([._-][a-z0-9]+)*$/.test(id.trim()))) skipped.push(`${name} (public token allowlist)`);
     else if (name === "NEAR_RPC_URL" && /^https:\/\/rpc\.testnet\.near\.org\/?$/.test(value)) skipped.push(`${name} (public NEAR endpoint)`);
-    else if (name === "SANTA_STOCK_ADDRESSES" && value.split(",").every((address) => ADDRESS.test(address))) skipped.push(`${name} (public token addresses)`);
-    else if (name === "ROBINHOOD_RPC_URL" && value === "https://rpc.testnet.chain.robinhood.com") skipped.push(`${name} (public network endpoint)`);
-    else if (["SANTA_RELAYER_DAILY_CAP_WEI", "SANTA_RELAYER_MAX_GAS_PRICE_WEI"].includes(name) && /^[0-9]+$/.test(value)) skipped.push(`${name} (public spend limit)`);
-    else if (ADDRESS.test(value)) skipped.push(`${name} (an address)`);
+    // Public numeric budgets can coincide with dependency constants. Credential-like names
+    // and unknown numeric values remain checked, including all-numeric keys/access codes.
+    else if (/^[0-9]+$/.test(value) && /(?:^|_)(MAX|MIN|DAILY|HOURLY|CAP|COUNT|TIMEOUT|PORT)(?:_|$)/.test(name)
+      && !/KEY|SECRET|TOKEN|PASS|SEED|CREDENTIAL|AUTH|CODE|COOKIE|SESSION/.test(name)) skipped.push(`${name} (public numeric budget)`);
     else if (value.length < MIN_SECRET_CHARS) skipped.push(`${name} (shorter than ${MIN_SECRET_CHARS} characters)`);
     else if (isLoopbackUrl(value)) skipped.push(`${name} (a loopback URL)`);
     else if (HEX.test(value)) checked.push({ name, exact: null, folded: value.slice(2).toLowerCase() });
@@ -89,28 +87,32 @@ function build() {
   if (result.status !== 0) fail("the verification build did not finish.");
 }
 
-const { checked, skipped } = needlesFor(readEnv());
-if (checked.length === 0) fail("the repo-root .env holds no value to check.");
-if (process.env.SANTA_LEAK_SCAN_ONLY !== "1") build();
+function main() {
+  const { checked, skipped } = needlesFor(readEnv());
+  if (checked.length === 0) fail("the repo-root .env holds no value to check.");
+  if (process.env.SANTA_LEAK_SCAN_ONLY !== "1") build();
 
-const outDir = join(WEB_DIR, DIST_DIR);
-if (!existsSync(outDir)) fail(`the build left no ${DIST_DIR} folder.`);
-const hits = new Map();
-let files = 0;
-for (const file of filesUnder(outDir)) {
-  files += 1;
-  const text = readFileSync(file).toString("latin1");
-  const lower = text.toLowerCase();
-  for (const needle of checked) {
-    const found = needle.exact !== null ? text.includes(needle.exact) : lower.includes(needle.folded);
-    if (found) hits.set(needle.name, (hits.get(needle.name) ?? 0) + 1);
+  const outDir = join(WEB_DIR, DIST_DIR);
+  if (!existsSync(outDir)) fail(`the build left no ${DIST_DIR} folder.`);
+  const hits = new Map();
+  let files = 0;
+  for (const file of filesUnder(outDir)) {
+    files += 1;
+    const text = readFileSync(file).toString("latin1");
+    const lower = text.toLowerCase();
+    for (const needle of checked) {
+      const found = needle.exact !== null ? text.includes(needle.exact) : lower.includes(needle.folded);
+      if (found) hits.set(needle.name, (hits.get(needle.name) ?? 0) + 1);
+    }
   }
+
+  if (skipped.length > 0) console.log(`Skipped: ${skipped.join(", ")}.`);
+  console.log(`Checked ${checked.length} values from the repo-root .env against ${files} files in ${DIST_DIR}.`);
+  if (hits.size > 0) {
+    for (const [name, count] of hits) console.error(`LEAK: the value of ${name} appears in ${count} file(s).`);
+    fail(`${hits.size} value(s) found in the build output.`);
+  }
+  console.log("No value found. check:leaks passed.");
 }
 
-if (skipped.length > 0) console.log(`Skipped: ${skipped.join(", ")}.`);
-console.log(`Checked ${checked.length} values from the repo-root .env against ${files} files in ${DIST_DIR}.`);
-if (hits.size > 0) {
-  for (const [name, count] of hits) console.error(`LEAK: the value of ${name} appears in ${count} file(s).`);
-  fail(`${hits.size} value(s) found in the build output.`);
-}
-console.log("No value found. check:leaks passed.");
+if (process.argv[1] === fileURLToPath(import.meta.url)) main();

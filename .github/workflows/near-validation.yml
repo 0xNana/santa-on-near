@@ -19,7 +19,6 @@ jobs:
           cache: npm
       - run: npm ci --ignore-scripts
       - run: npm audit --audit-level=high
-      - run: npm test --workspace=@santa/agent
       - run: npm test --workspace=@santa/core -- --maxWorkers=2
       - run: npm run lint --workspace=@santa/web
       - run: npm run build --workspace=@santa/web

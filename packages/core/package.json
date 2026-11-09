@@ -9,16 +9,10 @@
   "scripts": {
     "typecheck": "tsc --noEmit -p .",
     "test": "tsc --noEmit -p . && vitest run",
-    "serve": "tsx scripts/serve.ts",
-    "judge-gifts": "tsx scripts/create-judge-gifts.ts",
-    "gen-abi": "tsx scripts/gen-abi.ts",
     "near:integration:test": "tsx scripts/test-near-sandbox.ts"
   },
   "dependencies": {
-    "ip-location-api": "5.0.2",
-    "jose": "6.2.12",
     "near-api-js": "^7.4.0",
-    "viem": "2.57.3",
     "zod": "4.6.6"
   },
   "devDependencies": {

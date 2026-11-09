@@ -6,7 +6,7 @@ The [live rules](https://nearhackathon.com/HACKATHON.md) were fetched again and 
 
 ## X post draft
 
-The human reviews and publishes this text, with **[near-demo.mp4](demo/near-demo.mp4) attached**:
+The human reviews and publishes this text, with **[near-demo.mp4](https://github.com/0xNana/santa-on-near/blob/2121b4f2571439d0ed71d75d4d9fd1164970556c/demo/near-demo.mp4) attached**:
 
 > Token gifts should feel personal.
 >
@@ -16,9 +16,9 @@ The human reviews and publishes this text, with **[near-demo.mp4](demo/near-demo
 > https://github.com/0xNana/santa-on-near
 > @NEARProtocol #NEARHackathon
 
-This is a draft, not a published post. Publish only after the repository's NEAR commits are visible. The video is 1:42, 1080p H.264 with AAC audio, music, burned-in captions and an [SRT](demo/near-demo.en.srt). It shows a real sender deposit, recipient Meteor message signature and sponsored claim. It does not show mainnet use, a hosted deployment, a new recipient storage registration or a real testnet expiry refund.
+This is a draft, not a published post. Publish only after the repository's NEAR commits are visible. The video is 1:42, 1080p H.264 with AAC audio, music, burned-in captions and an [SRT](https://github.com/0xNana/santa-on-near/blob/2121b4f2571439d0ed71d75d4d9fd1164970556c/demo/near-demo.en.srt). It shows a real sender deposit, recipient Meteor message signature and sponsored claim. It does not show mainnet use, a hosted deployment, a new recipient storage registration or a real testnet expiry refund.
 
-Copy the exact public X post URL after publishing. The submission's `demoUrl` is that **X post URL**, not localhost, a proposed Fly address, or the local MP4 path. Hosting is optional under Q-012; because this is a local app, the X post needs the actual video, not screenshots alone.
+Copy the exact public X post URL after publishing. The submission's `demoUrl` is that **X post URL**, not localhost, a proposed Fly address, or a local MP4 path. Hosting is optional under Q-012; because this is a local app, the X post needs the actual video, not screenshots alone.
 
 ## Project description draft
 
@@ -79,15 +79,15 @@ These checks support review; distinguish our own quality gate from official elig
 | --- | --- |
 | Deployed NEAR escrow | `gifts.santa-gifts.testnet`; [deployment proof](docs/near-testnet-deployment.json). |
 | Allowlisted fixture token | `token.santa-gifts.testnet`, zero decimals, valueless TEST units. |
-| Real Meteor demo | Gift **#2**, 25 TEST; sender and recipient are separate dedicated testnet accounts. [Public proof](demo/near-transaction-proof.json). |
+| Real Meteor demo | Gift **#2**, 25 TEST; sender and recipient are separate dedicated testnet accounts. [Public proof](docs/near-wallet-proof.json). |
 | Create transaction | [5WdthDhUbjJAr77VCZMLvXHPsCrpWizcMK3Ay6S8UKQD](https://testnet.nearblocks.io/txns/5WdthDhUbjJAr77VCZMLvXHPsCrpWizcMK3Ay6S8UKQD). |
 | Claim transaction | [FT7ySuADLNcDjngY5eZswk71bc98CDzP1HneyDCbQv45](https://testnet.nearblocks.io/txns/FT7ySuADLNcDjngY5eZswk71bc98CDzP1HneyDCbQv45); final callback `true`. |
 | Balances / recipient gas | Sender 999975 → 999950 TEST; recipient 25 → 50; escrow 0 → 25 → 0. Recipient NEAR and nonce unchanged; relayer paid. |
 | Abuse / recovery | Actual authorization replay returned 409 without another payout/spend; nonce consumed, saved link recovered, reload stayed claimed. Earlier API test separately verifies wrong-secret refusal and first storage registration. |
-| Node 22 local validation | 371 core tests, one CLI test, production build/type checks, lint; [validation record](docs/local-validation.json). |
+| Node 22 local validation | Cleanup: 57 NEAR/evidence tests, production build/type checks and lint; [cleanup validation](docs/cleanup-validation.json). Historical pre-cleanup counts are preserved in the original validation record. |
 | Contract validation | Nine Rust tests and real Sandbox 2.14.0 claim, failed-transfer recovery, expiry/refund and balance conservation pass. |
-| Dependency and secret review | Zero high/critical; 17 low/eight moderate findings documented. Production private-value scan passes; keys, `.env`, gift files and generated builds are ignored. |
-| Tested application source | `8fc1720` — identical application/contract/dependency/tooling source; subsequent commits add evidence/documentation. |
+| Dependency and secret review | Zero high/critical; 15 low/eight moderate findings documented. Production private-value scan passes; keys, `.env`, gift files, `/demo/` recordings and generated builds are ignored. |
+| Historical demo source | `8fc1720` — source corresponding to the recorded wallet demo. The later cleanup removes superseded code/dependencies; its validation is recorded separately. |
 | Real testnet expiry refund | **Still unverified.** An internal release gate, not a separate mandatory event receipt. Any new public-chain transaction requires explicit human confirmation. Do not substitute Sandbox results or gift #2's claim receipt. |
 | Hosting | **Optional, not deployed.** Proposed Fly settings are not a working demo URL. Local-only submission is allowed with public reproducible source and the X video (Q-012). |
 | Aggregate evidence check | `npm run hackathon:check` intentionally remains blocked until genuine public refund/X evidence is recorded in `docs/near-evidence.json`. Never fabricate the missing file, invent hashes, or weaken the gate to claim readiness. |
@@ -110,3 +110,5 @@ Verify the remote commit and CI afterward; do not run the submission API as part
 - **503 or uncertain network delivery:** preserve the same request ID; for 503 wait a minute before a permitted retry. Never generate a new ID to retry an uncertain submission.
 
 After a saved submission, the human requests corrections at [request-changes](https://nearhackathon.com/request-changes). Never send a second project submission to fix a saved one.
+
+Local media is intentionally not tracked in the cleaned tree. The recording link is pinned to the historical published commit; public proof and checksum records are tracked in `docs/`. No new X post, refund receipt or submission is invented by this cleanup.

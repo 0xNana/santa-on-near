@@ -10,14 +10,8 @@ packages/core/*
 !packages/core/package.json
 !packages/core/src/
 !packages/core/src/**
-!packages/agent/
-packages/agent/*
-!packages/agent/package.json
 !packages/web/
 !packages/web/**
-!scripts/
-scripts/*
-!scripts/fly-entrypoint.sh
 **/node_modules
 **/.next
 **/.next-*

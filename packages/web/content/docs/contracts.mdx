@@ -5,7 +5,7 @@ description: Santa's Rust NEAR Testnet escrow contract.
 
 The Rust contract source is in `packages/contracts/near/src/lib.rs`. It implements NEP-141 `ft_on_transfer` escrow, an owner-managed token allowlist, sponsored claims, one-use claim nonces, and expiry refunds.
 
-No NEAR contract address is published yet. Do not treat the legacy Robinhood vault address as a NEAR deployment. Deployment requires an existing NEAR Testnet contract account and is performed explicitly with `npm run near:contract:deploy:testnet`.
+The verified escrow is `gifts.santa-gifts.testnet`, with `token.santa-gifts.testnet` as its allowlisted test token. Deployment requires an existing NEAR Testnet contract account and is performed explicitly with `npm run near:contract:deploy:testnet`.
 
 ## Contract methods
 
@@ -19,4 +19,4 @@ No NEAR contract address is published yet. Do not treat the legacy Robinhood vau
 
 External NEP-141 transfer outcomes are asynchronous. Private callbacks finalize `Claimed` / `Refunded` states only after the FT transfer succeeds.
 
-Test with `npm run near:contract:test` and compile with `npm run near:contract:build`. The retained Solidity contract and Foundry tests are legacy and do not test this NEAR implementation.
+Test with `npm run near:contract:test` and compile with `npm run near:contract:build`.

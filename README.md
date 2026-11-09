@@ -18,9 +18,9 @@ The active `/send` and `/g/<id>` flows target NEAR Testnet. **Open Innovation (`
 
 **A live NEAR Testnet gift and sponsored claim are verified.** The escrow is `gifts.santa-gifts.testnet`; its allowlisted token is `token.santa-gifts.testnet`. Gift #1 transferred 25 valueless TEST units from `sender.santa-gifts.testnet` to `recipient.santa-gifts.testnet` through the local production claim API. The relayer paid recipient registration and gas; the recipient spent no NEAR. Wrong-secret and replay requests were refused without relayer spending. See the [create receipt](https://testnet.nearblocks.io/txns/3AeD2nFtgZ7aQhf1FkcQ7nRQNYHQMGaSWDtMD16xd582), [claim receipt](https://testnet.nearblocks.io/txns/FGpEYRAs4j4twJKWJXLvAMFQTCCFwjxB2bbr9xQeMcUk), [balances and live-test evidence](docs/near-testnet-smoke.json), and [deployment verification](docs/near-testnet-deployment.json).
 
-**The real two-wallet NEAR demo is recorded.** Gift #2 used the actual Meteor Wallet UI for the sender deposit and recipient NEP-413 authorization against the local production app. The recipient received 25 TEST, spent no NEAR, and a replay returned 409 without further spending. Watch the [1:42 NEAR video](demo/near-demo.mp4), read its [recording notes](demo/NEAR-README.md), and inspect the [public proof](demo/near-transaction-proof.json). Hosting, a real testnet expiry refund, and public submission remain pending. See [the judge walkthrough](docs/judges.md) and [submission readiness](docs/hackathon-readiness.md).
+**The real two-wallet NEAR demo is recorded.** Gift #2 used the actual Meteor Wallet UI for the sender deposit and recipient NEP-413 authorization against the local production app. The recipient received 25 TEST, spent no NEAR, and a replay returned 409 without further spending. Watch the [1:42 NEAR video](https://github.com/0xNana/santa-on-near/blob/2121b4f2571439d0ed71d75d4d9fd1164970556c/demo/near-demo.mp4), read its [recording notes](docs/near-wallet-demo.md), and inspect the [public proof](docs/near-wallet-proof.json). Optional hosting, a real testnet expiry refund, and public submission remain pending. See [the judge walkthrough](docs/judges.md) and [submission readiness](docs/hackathon-readiness.md).
 
-This is a major migration from the earlier Robinhood Chain Testnet product. The old Solidity contracts, EVM API, CLI and Robinhood-specific documentation remain in the repository as legacy material; they are not used by the active NEAR send and claim pages.
+The current source tree contains only the NEAR application. Superseded contracts, CLI, API, UI and dependencies have been removed; their history remains available at the disclosed baseline.
 
 ## Hackathon scope and provenance
 
@@ -30,7 +30,7 @@ The NEAR contribution is the Rust NEP-141 escrow and asynchronous claim/refund s
 
 ## Libraries, assistance, and license
 
-Santa reuses Next.js, React, Tailwind CSS, Fumadocs, NEAR Wallet Selector/Meteor Wallet, near-api-js, near-sdk-rs, and NEAR Contract Standards. NEAR Sandbox is a development-only integration-test dependency. The earlier app also uses the dependencies listed in the workspace manifests, including retained EVM/Privy code. The existing Santa UI and EVM utilities are baseline reuse. Codex assisted with the NEAR migration, tests, documentation, and this readiness review; generated code is included in the same review scope. Source is [MIT licensed](LICENSE); third-party packages and historical demo audio retain their own licenses and attribution.
+Santa uses Next.js, React, Tailwind CSS, Fumadocs, NEAR Wallet Selector/Meteor Wallet, near-api-js, near-sdk-rs, and NEAR Contract Standards. NEAR Sandbox is a development-only integration-test dependency. The existing Santa UI is baseline reuse; the removed implementation remains inspectable at the baseline. Codex assisted with the NEAR migration, tests, documentation, and this readiness review; generated code is included in the same review scope. Source is [MIT licensed](LICENSE); third-party packages and historical demo audio retain their own licenses and attribution.
 
 ## How it works
 
@@ -98,7 +98,6 @@ Use testnet accounts and assets only. Never deploy from a wallet holding mainnet
 ```sh
 npm test
 npm run typecheck --workspace=@santa/core
-npm run typecheck --workspace=@santa/agent
 npm run typecheck --workspace=@santa/web
 npm run lint --workspace=@santa/web
 npm run build --workspace=@santa/web
@@ -108,7 +107,7 @@ npm run near:integration:test
 npm run hackathon:check
 ```
 
-The Rust contract and current NEAR routes are the migration target. Foundry tests cover the retained legacy Solidity implementation, not the NEAR contract.
+All retained application tests target the NEAR implementation and its public evidence checks. Tests belonging only to removed features were removed with those features.
 
 ## Repository map
 
@@ -117,7 +116,6 @@ packages/web/                 Next.js app, NEAR Wallet Selector, send and claim 
 packages/core/src/near*.ts     NEAR RPC and sponsored-claim verification
 packages/contracts/near/       Rust NEAR escrow contract
 packages/contracts/deploy-near-testnet.sh
-packages/contracts/src/        Legacy Robinhood/EVM Solidity contract
 ```
 
 ## Security notes
@@ -135,3 +133,7 @@ packages/contracts/src/        Legacy Robinhood/EVM Solidity contract
 See [the NEAR deployment checklist](docs/near-migration.md) for the implemented interface, remaining testnet setup, and retained legacy entry points.
 
 The local-chain integration test launches NEAR Sandbox 2.14.0, downloads the official node on first use, and uses only ephemeral localhost accounts. It needs no `.env`, public-chain funds, or wallet keys. `NEAR_SANDBOX_BIN_PATH` can point to an already installed official sandbox binary. The test fails on download/startup/assertion errors; it never skips chain execution. `hackathon:check` is expected to remain blocked until reviewed source and genuine public NEAR evidence are ready.
+
+## Demo distribution
+
+`/demo/` is ignored and untracked; local recordings stay on the creator’s machine. The [recorded NEAR video](https://github.com/0xNana/santa-on-near/blob/2121b4f2571439d0ed71d75d4d9fd1164970556c/demo/near-demo.mp4) remains publicly available at its immutable published commit. Public [wallet proof](docs/near-wallet-proof.json), [recording notes](docs/near-wallet-demo.md), and [video checksum](docs/near-video-checks.json) live in `docs/`. The submission check downloads that pinned artifact and verifies its exact size, MP4 header and SHA-256; a fresh clone needs no local recording folder. The human still attaches the video to the required public X post.

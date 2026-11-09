@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { siteOrigin } from "@/lib/site";
 
-const DOCS = ["", "/how-it-works", "/getting-started", "/agent", "/faq", "/contracts", "/api", "/security"];
+const DOCS = ["", "/how-it-works", "/getting-started", "/faq", "/contracts", "/api", "/security"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const origin = siteOrigin();

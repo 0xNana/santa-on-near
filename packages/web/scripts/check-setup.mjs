@@ -13,6 +13,6 @@ for (const path of ["/", "/send", "/docs", "/docs/getting-started"]) {
   if (path === "/send" && process.env.SANTA_TEST_UNCONFIGURED === "1") assert.match(html, /Configure NEXT_PUBLIC_NEAR_CONTRACT_ACCOUNT/);
   console.log(`PASS ${path}`);
 }
-const legacy = await fetch(new URL("/api/stocks", origin));
-assert.equal(legacy.status, 410, "Legacy EVM API must be disabled on a NEAR deployment.");
-console.log("PASS legacy API disabled");
+const missing = await fetch(new URL("/api/unsupported", origin));
+assert.equal(missing.status, 404, "Unsupported API routes must not fall back to another backend.");
+console.log("PASS unsupported API returns 404");

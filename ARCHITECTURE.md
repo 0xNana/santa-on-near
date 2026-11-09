@@ -11,8 +11,6 @@ The active gifting experience runs on NEAR Testnet. It is composed of the Next.j
 | `packages/contracts/near` | NEP-141 escrow contract, gift state, claim, and refund |
 | `packages/contracts/deploy-near-testnet.sh` | Compile, deploy, initialize, and verify a fresh Testnet contract |
 
-The old EVM packages and Solidity contract are retained as legacy code; the active send and gift routes do not call them.
-
 ## Gift creation
 
 1. The browser reads the selected token metadata and the contract's next gift ID.
@@ -47,4 +45,4 @@ The contract and web app default to NEAR Testnet. `NEAR_CONTRACT_ACCOUNT` and `N
 
 Deployment is explicit and requires an existing testnet contract account, a local `near-cli-rs` keychain, and at least one allowlisted NEP-141 token. No contract is deployed automatically.
 
-`npm run near:contract:deploy:testnet` loads the root `.env`, compiles with the Cargo lockfile, deploys and initializes atomically, then reads the next ID, owner/relayer configuration, and gift view. The default `packages/contracts/deploy.sh` uses this NEAR path; `deploy-evm-legacy.sh` retains the historical EVM deploy command.
+`npm run near:contract:deploy:testnet` loads the root `.env`, compiles with the Cargo lockfile, deploys and initializes atomically, then reads the next ID, owner/relayer configuration, and gift view. The default `packages/contracts/deploy.sh` uses the same NEAR path.

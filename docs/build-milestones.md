@@ -4,7 +4,7 @@ The NEAR work is on local branch `codex/near-hackathon`, targeting the confirmed
 
 ## Review the contribution
 
-The parent baseline is the original EVM Santa commit `042714b49ea38060eaf92e38ecf9b4dc25fe07a1`, dated 8 November, preserved with its real history from [0xNana/santa](https://github.com/0xNana/santa/tree/042714b49ea38060eaf92e38ecf9b4dc25fe07a1). The UI, branding and retained EVM utilities are reused; the NEAR contract and integration are the contribution being presented. The repositories are provenance and submission locations for the same project, not two entries.
+The parent baseline is the original EVM Santa commit `042714b49ea38060eaf92e38ecf9b4dc25fe07a1`, dated 8 November, preserved with its real history from [0xNana/santa](https://github.com/0xNana/santa/tree/042714b49ea38060eaf92e38ecf9b4dc25fe07a1). The UI and branding are reused; superseded utilities have since been removed; the NEAR contract and integration are the contribution being presented. The repositories are provenance and submission locations for the same project, not two entries.
 
 ```sh
 git log --reverse --oneline 042714b..HEAD
@@ -15,10 +15,10 @@ git show --stat 5cb4ed9
 | Commit | Milestone | Review / verification |
 | --- | --- | --- |
 | `1461941` | Rust NEP-141 escrow and test-token fixture | Allowlist, custody, asynchronous claim/refund recovery, one-use nonce; nine Rust tests and formatting pass. |
-| `5cb4ed9` | Complete NEAR application | Real Meteor deposit and NEP-413 claim, relayer policy, encrypted notes, link recovery, RPC retries, CSP/SDK fixes, matched lockfile and integration harness. Privy UI retained under `legacy/web`. |
+| `5cb4ed9` | Complete NEAR application | Real Meteor deposit and NEP-413 claim, relayer policy, encrypted notes, link recovery, RPC retries, CSP/SDK fixes, matched lockfile and integration harness. Superseded surfaces were later removed by the NEAR-only cleanup. |
 | `4f7792f` | Reproduction, CI and deployment tooling | Node 22 pin, read-only CI, explicit testnet deploy path, health checks and single-instance Fly configuration. Hosting is configured, not deployed. |
-| `8fc1720` | Existing legacy SQLite settings | Separate preservation of the prior working-tree timeout/NORMAL synchronization change; NORMAL has weaker power-loss durability than FULL. It does not store active NEAR gift state. |
-| `eb11136` | Public chain evidence and wallet video | Actual gift #2, final callback, balances, gas payer, replay result, 1:42 MP4, captions and private-data/export checks. Earlier EVM media is labeled legacy. |
+| `8fc1720` | Historical compatibility settings | Records an earlier compatibility change in a backend that has since been removed. |
+| `eb11136` | Public chain evidence and wallet video | Actual gift #2, final callback, balances, gas payer, replay result, 1:42 MP4, captions and private-data/export checks. Historical recordings remain available at their immutable commit. |
 | `31660b3` | Judge and agent documentation | Canonical rules, milestone map, provenance and reproduction/evidence boundaries. |
 | `2121b4f` | Submission preparation | Filled public checklist and X draft; this first published head passed both CI jobs. |
 
@@ -26,13 +26,12 @@ The documentation checkpoint adds this map, reproducible judge instructions, pro
 
 The complete wallet/API migration and its dependency lockfile are one coupled build milestone. Splitting the SDK removal from the active UI migration would leave an intermediate checkout unable to install/build consistently. Source changes are not disguised as later documentation changes.
 
-## Reproduce validation
+## Historical milestone validation
 
-Use the README installation steps and `.nvmrc`. The [local validation record](local-validation.json) describes checks actually executed with Node 22.23.4 and Rust 1.99.1 against application/tooling source matching `8fc1720`:
+Use the current README and `.nvmrc` for reproduction. The counts below describe the pre-cleanup milestone; its deleted-feature tests and CLI are no longer in the current tree. The [local validation record](local-validation.json) describes checks actually executed with Node 22.23.4 and Rust 1.99.1 against application/tooling source matching `8fc1720`:
 
 ```sh
 npm ci --ignore-scripts
-npm test --workspace=@santa/agent
 npm test --workspace=@santa/core -- --maxWorkers=2
 npm run lint --workspace=@santa/web
 npm run build --workspace=@santa/web
@@ -48,10 +47,14 @@ The first restricted Node 22 build could not read its TypeScript child-process o
 
 ## Continue from here
 
-1. Read [the public submission checklist](../submission.md), [README](../README.md), [judge walkthrough](judges.md) and canonical [HACKATHON.md](../HACKATHON.md). `HACKATHON (1).md` preserves the originally supplied copy, including its malformed pasted lines; it is not the canonical rules snapshot.
-2. Review the active boundaries: `packages/contracts/near/src/lib.rs`, `packages/core/src/near-relayer.ts`, `near-claim-policy.ts`, the `/api/near` routes, and `packages/web/components/near`. The old CLI/Solidity/Privy flows are legacy.
+1. Read [the public submission checklist](../submission.md), [README](../README.md), [judge walkthrough](judges.md) and canonical [HACKATHON.md](../HACKATHON.md). The malformed duplicate rules file has been removed; only the verified canonical snapshot remains.
+2. Review the active boundaries: `packages/contracts/near/src/lib.rs`, `packages/core/src/near-relayer.ts`, `near-claim-policy.ts`, the `/api/near` routes, and `packages/web/components/near`. The superseded runtime has been removed from the current tree.
 3. Keep the real wallet evidence separate from the older local-key API test. The video uses a local production app; recipient token storage was already registered. Real testnet expiry-refund evidence remains absent. Sandbox refund success does not establish a public-testnet refund.
 4. The approved milestone history is published to `main`, its baseline comparison is verified, and both CI jobs passed at `2121b4f`. Keep subsequent source changes tied to fresh validation; do not rewrite or force-push this history.
 5. The human publishes the X video and supplies its exact public post URL. Collect contact, size, payout and consent privately. Validate and show the exact payload before the single submission; follow the official retry/request-change rules.
 
 `npm run hackathon:check` is intentionally blocked until genuine refund/X evidence is recorded in `docs/near-evidence.json`. That is the project's stronger internal evidence gate, not a claim that the event mandates a refund receipt. Do not fabricate evidence or weaken the checker to manufacture readiness. Hosting is optional under event Q-012.
+
+## Source cleanup
+
+The next cleanup milestones remove the superseded source and its dedicated tests/dependencies, retain every NEAR behavior test, move public wallet proof into `docs/`, and ignore/untrack local recordings. The approved historical video remains pinned to its original published commit. Source changed during cleanup, so the earlier CI and live demo prove their recorded snapshot; the cleaned tree receives separate build, regression, sandbox and browser smoke validation.

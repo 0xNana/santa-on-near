@@ -50,7 +50,7 @@ export function proxy(request: NextRequest): NextResponse {
   return response;
 }
 
-// Pages only: the API sets its own headers in core's http.ts, and built assets carry no markup.
+// Pages only: the NEAR route handlers set their own headers, and built assets carry no markup.
 export const config = {
   matcher: ["/((?!api/|_next/static/|_next/image).*)"],
 };

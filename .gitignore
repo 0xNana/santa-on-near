@@ -48,3 +48,6 @@ docs/RD-PRIVY.md
 *.sqlite-*
 *.db
 *.db-*
+
+# Local demo recordings are distributed separately; public proof lives in docs/.
+/demo/

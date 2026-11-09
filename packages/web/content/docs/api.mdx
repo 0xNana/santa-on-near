@@ -8,5 +8,3 @@ The active sponsored claim route is `POST /api/near/claim`. It accepts a strict 
 Responses contain fixed error codes and never include raw RPC or signer errors. The request body and private claim key are not logged. Rate limiting is currently in-memory per server process.
 
 `GET /api/near/health` returns 200 when NEAR server settings are configured, the deployed contract responds, its relayer matches the server setting, and the signer is a registered full-access key of the relayer. Configuration, RPC, relayer mismatch, or key authorization failures return 503. Readiness does not prove sufficient balances.
-
-The older `/api/claim`, `/api/quote`, `/api/stocks`, and `/api/judge` endpoints are part of the retained EVM implementation. They return 410 by default and require the explicit `SANTA_ENABLE_LEGACY_EVM_API=1` opt-in. Leave that unset on a NEAR deployment.

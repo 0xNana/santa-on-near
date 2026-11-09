@@ -45,29 +45,7 @@
   z-index: 1;
 }
 
-/* Film grain, the same values as the landing page's .hero-grain, fixed behind the content. */
-.santa-docs .hero-grain {
-  position: fixed;
-  inset: -8px;
-  z-index: 0;
-  background-size: 240px 240px;
-  mix-blend-mode: overlay;
-  opacity: 0.06;
-  pointer-events: none;
-  animation: docs-grain-jitter 0.5s steps(2) infinite;
-}
 
-@keyframes docs-grain-jitter {
-  0% {
-    transform: translate(0, 0);
-  }
-  50% {
-    transform: translate(-2px, 1px);
-  }
-  100% {
-    transform: translate(1px, -2px);
-  }
-}
 
 /* Top bar: the V mark and wordmark, the same pair as the site's own top bar. */
 .docs-brand {
@@ -199,61 +177,10 @@
   font-size: 15px;
 }
 
-/* Diagrams */
-/* The box pans sideways only. A vertical wheel or swipe over it moves the page, never the diagram. */
-.docs-mermaid {
-  margin: 1.5rem 0;
-  padding: 24px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  overscroll-behavior-x: contain;
-  -webkit-overflow-scrolling: touch;
-  background: var(--bg-raised);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-}
-
-.docs-mermaid-wait {
-  min-height: 160px;
-}
-
-.docs-mermaid-inner svg {
-  display: block;
-  margin-inline: auto;
-  max-width: 100%;
-  height: auto;
-}
-
-/* A wide diagram keeps a readable size and scrolls sideways inside its panel instead of shrinking.
-   An auto side margin on a block that overflows resolves to zero, so the left edge is never cut off. */
-.docs-mermaid-inner {
-  min-width: var(--mermaid-min);
-  margin-inline: auto;
-}
-
-.docs-mermaid-source {
-  margin: 1.5rem 0;
-  padding: 24px;
-  overflow-x: auto;
-  background: var(--bg-raised);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  color: var(--ink-muted);
-  font-family: var(--font-mono);
-  font-size: 14px;
-  line-height: 1.6;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .santa-docs .hero-grain {
-    animation: none;
-  }
-
   .docs-wordmark,
   .santa-docs #nd-page .prose a:not([data-card]),
   .santa-docs .docs-edit-link {
     transition: none;
   }
 }
-
-.santa-docs .hero-grain { display: none; }

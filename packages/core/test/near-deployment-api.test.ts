@@ -1,19 +1,11 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { JsonRpcProvider, KeyPairEd25519 } from "near-api-js";
 import * as rpc from "../src/near-contract.js";
-import { GET as legacyGet } from "../../web/app/api/[...path]/route.js";
 import { GET as health } from "../../web/app/api/near/health/route.js";
 
 afterEach(() => { vi.restoreAllMocks(); vi.unstubAllEnvs(); });
 
 describe("NEAR deployment API", () => {
-  it("keeps legacy EVM endpoints disabled by default", async () => {
-    vi.stubEnv("SANTA_ENABLE_LEGACY_EVM_API", "");
-    const response = await legacyGet(new Request("https://santa.example/api/stocks") as never);
-    expect(response.status).toBe(410);
-    expect(await response.json()).toEqual({ ok: false, error: "legacy_api_disabled" });
-  });
-
   function configure() {
     vi.spyOn(JsonRpcProvider.prototype, "viewAccessKey").mockResolvedValue({ nonce: 1n, permission: "FullAccess", block_hash: "block", block_height: 1 });
     for (const [name, value] of Object.entries({ NEAR_CONTRACT_ACCOUNT: "santa.testnet",

@@ -1,4 +1,5 @@
-import { existsSync, readFileSync, statSync } from "node:fs";
+import { verifyDemoVideo } from "./verify-demo-video.mjs";
+import { existsSync, readFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
@@ -12,9 +13,9 @@ const baseline = "042714b";
 check(Date.now() <= Date.parse("2026-11-14T23:59:00Z"), "submission deadline: 14 November 2026, 23:59 UTC");
 check(existsSync(file("LICENSE")), "repository license present");
 check(existsSync(file("HACKATHON.md")), "canonical rules snapshot present; re-fetch before submission");
-check(git("branch", "--show-current") === "codex/near-hackathon", "dedicated local NEAR branch");
+check(["main", "codex/near-hackathon"].includes(git("branch", "--show-current")), "NEAR main or review branch");
 check(git("status", "--porcelain").length === 0, "all reviewed submission source committed; no forgotten untracked files");
-check(git("rev-parse", "HEAD") !== git("rev-parse", baseline), "submission head differs from the disclosed EVM baseline");
+check(git("rev-parse", "HEAD") !== git("rev-parse", baseline), "submission head differs from the disclosed baseline");
 for (const path of ["packages/contracts/near/src/lib.rs", "packages/core/src/near-relayer.ts", "packages/web/components/near/NearSendPage.tsx"]) {
   let tracked = true;
   try { git("ls-files", "--error-unmatch", path); } catch { tracked = false; }
@@ -30,7 +31,7 @@ if (!existsSync(evidencePath)) {
     const tx = /^[1-9A-HJ-NP-Za-km-z]{40,50}$/;
     check(evidence.networkId === "testnet", "evidence is for NEAR Testnet");
     check(account.test(evidence.contractAccount ?? "") && account.test(evidence.tokenAccount ?? ""), "real NEAR contract and token account IDs recorded");
-    check(["createTx", "claimTx", "refundTx"].every((key) => tx.test(evidence[key] ?? "")), "NEAR transaction hashes present; EVM 0x hashes cannot pass");
+    check(["createTx", "claimTx", "refundTx"].every((key) => tx.test(evidence[key] ?? "")), "valid NEAR transaction hashes recorded");
     let matchesCode = false;
     if (/^[a-f0-9]{40}$/.test(evidence.submissionCommit ?? "")) {
       try {
@@ -40,8 +41,8 @@ if (!existsSync(evidencePath)) {
     }
     check(matchesCode, "tested commit is an ancestor with identical application/contract/tooling source");
     check(/^https:\/\/(x\.com|twitter\.com)\/[^/]+\/status\/[0-9]+$/.test(evidence.demoPostUrl ?? ""), "human-published demo post URL recorded");
-    const video = file("demo/near-demo.mp4");
-    check(existsSync(video) && statSync(video).size > 10_000 && readFileSync(video).subarray(4, 8).toString() === "ftyp", "new NEAR MP4 present; legacy EVM video is not substituted");
+    const video = JSON.parse(readFileSync(file("docs/near-video-checks.json"), "utf8"));
+    check(await verifyDemoVideo(video), "published NEAR MP4 is available and matches its recorded size, header and SHA-256");
     check(evidence.reviewed === true && Number.isFinite(Date.parse(evidence.verifiedAt ?? "")), "human-reviewed transaction evidence has a verification date");
   } catch { check(false, "evidence file parses and follows the documented schema"); }
 }
