@@ -89,7 +89,7 @@ These checks support review; distinguish our own quality gate from official elig
 | Dependency and secret review | Zero high/critical; 15 low/eight moderate findings documented. Production private-value scan passes; keys, `.env`, gift files, `/demo/` recordings and generated builds are ignored. |
 | Historical demo source | `8fc1720` — source corresponding to the recorded wallet demo. The later cleanup removes superseded code/dependencies; its validation is recorded separately. |
 | Real testnet expiry refund | **Still unverified.** An internal release gate, not a separate mandatory event receipt. Any new public-chain transaction requires explicit human confirmation. Do not substitute Sandbox results or gift #2's claim receipt. |
-| Hosting | **Optional, not deployed.** Proposed Fly settings are not a working demo URL. Local-only submission is allowed with public reproducible source and the X video (Q-012). |
+| Hosting | **Live:** https://santa-near-testnet.fly.dev. [Readiness and browser verification](docs/fly-deployment.json) passed. The existing video remains the local wallet run; no fresh hosted transfer is claimed. Keep hosting available through judging. |
 | Aggregate evidence check | `npm run hackathon:check` intentionally remains blocked until genuine public refund/X evidence is recorded in `docs/near-evidence.json`. Never fabricate the missing file, invent hashes, or weaken the gate to claim readiness. |
 
 ## Publication and submission handoff

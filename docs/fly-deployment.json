@@ -1,0 +1,147 @@
+{
+  "verifiedAt": "2026-11-10T07:26:13.739310+00:00",
+  "status": "deployed-and-public-smoke-verified",
+  "origin": "https://santa-near-testnet.fly.dev",
+  "networkId": "testnet",
+  "sourceCommitAtDeployment": "0da6f304c087036044321e14884e0bac24c3e8c4",
+  "validatedPublicApplicationCommit": "9f17568f426fdea0aa9332d84f96b7cbad8a3988",
+  "sourceScope": "Application, dependencies and Docker source match the passing cleanup CI; the deployment source adds the standardized README. fly.toml target settings are unchanged; its comment now identifies the live app.",
+  "fly": {
+    "app": "santa-near-testnet",
+    "region": "lhr",
+    "machineId": "185923eb021e58",
+    "machineCount": 1,
+    "state": "started",
+    "createdAt": "2026-11-10T07:17:24Z",
+    "guest": {
+      "cpu_kind": "shared",
+      "cpus": 1,
+      "memory_mb": 1024
+    },
+    "image": {
+      "registry": "registry.fly.io",
+      "repository": "santa-near-testnet",
+      "tag": "deployment-01M724X6HH9B2S8ZDK4C3JGJ53",
+      "digest": "sha256:9a01c2c0a23e7127f471c30a8dd7dacf1f09b57bf90292552d7a77a4fef00511",
+      "labels": {
+        "org.opencontainers.image.revision": "0da6f304c087036044321e14884e0bac24c3e8c4"
+      }
+    },
+    "autoStopMachines": "off",
+    "healthCheck": "passing",
+    "recheckedAfterLaunch": "2026-11-10T07:26:13.739310+00:00",
+    "stillSingleStartedMachine": true
+  },
+  "accounts": {
+    "contract": "gifts.santa-gifts.testnet",
+    "relayer": "relayer.santa-gifts.testnet",
+    "token": "token.santa-gifts.testnet"
+  },
+  "secrets": {
+    "runtimeNames": [
+      "NEAR_RELAYER_SECRET_KEY"
+    ],
+    "status": "Deployed",
+    "scope": "Only the dedicated relayer key was exported, after explicit user approval. No owner, escrow, token, sender or recipient key was uploaded."
+  },
+  "httpSmoke": {
+    "origin": "https://santa-near-testnet.fly.dev",
+    "verifiedAt": "2026-11-10T07:18:48.127Z",
+    "get": [
+      {
+        "path": "/",
+        "status": 200,
+        "contentType": "text/html; charset=utf-8"
+      },
+      {
+        "path": "/send",
+        "status": 200,
+        "contentType": "text/html; charset=utf-8"
+      },
+      {
+        "path": "/docs",
+        "status": 200,
+        "contentType": "text/html; charset=utf-8"
+      },
+      {
+        "path": "/docs/contracts",
+        "status": 200,
+        "contentType": "text/html; charset=utf-8"
+      },
+      {
+        "path": "/g/2/opengraph-image",
+        "status": 200,
+        "contentType": "image/png"
+      },
+      {
+        "path": "/api/near/health",
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "ok": true,
+          "networkId": "testnet",
+          "contractId": "gifts.santa-gifts.testnet"
+        }
+      },
+      {
+        "path": "/api/unsupported",
+        "status": 404,
+        "contentType": "text/html; charset=utf-8"
+      }
+    ],
+    "claimGuards": {
+      "invalidOrigin": {
+        "status": 403,
+        "body": {
+          "ok": false,
+          "error": "origin_refused"
+        }
+      },
+      "invalidBody": {
+        "status": 400,
+        "body": {
+          "ok": false,
+          "error": "invalid_claim_request"
+        }
+      },
+      "unsupportedContent": {
+        "status": 415,
+        "body": {
+          "ok": false,
+          "error": "content_type_refused"
+        }
+      },
+      "closedGift": {
+        "status": 409,
+        "body": {
+          "ok": false,
+          "error": "gift_not_open"
+        }
+      }
+    },
+    "transactionsSigned": 0,
+    "scope": "Read-only pages, readiness and refused claim requests only; no fresh hosted gift transfer performed."
+  },
+  "browserSmoke": {
+    "home": "passed",
+    "giftPreview": "passed",
+    "send": "passed",
+    "meteorSelector": "passed",
+    "contractDocs": "passed",
+    "mobileMissingSecret": "passed",
+    "horizontalOverflow": false,
+    "consoleErrors": [],
+    "failedRequests": [],
+    "transactionsSigned": 0
+  },
+  "limitations": [
+    "No fresh hosted gift transfer or real testnet expiry refund was performed.",
+    "The prior real wallet video was recorded against a local production server.",
+    "The public app requires one instance while relayer coordination and rate limits are process-local."
+  ],
+  "transport": {
+    "httpsRedirectStatus": 301,
+    "nonceCsp": true,
+    "publicMetadataOriginVerified": true
+  }
+}

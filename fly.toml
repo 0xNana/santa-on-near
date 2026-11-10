@@ -1,6 +1,5 @@
-# Public IDs match the verified testnet deployment. Confirm the Fly app name before deploying.
-# Use one Machine while
-# sponsored-claim rate limits and relayer transaction coordination are process-local.
+# NEAR Testnet app: https://santa-near-testnet.fly.dev
+# Keep one Machine while relayer coordination and limits are process-local.
 app = "santa-near-testnet"
 primary_region = "lhr"
 kill_signal = "SIGTERM"

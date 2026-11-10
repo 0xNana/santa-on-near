@@ -13,7 +13,8 @@
 </p>
 
 <p align="center">
-  <a href="#demo">Demo</a> ·
+  <a href="https://santa-near-testnet.fly.dev">Live app</a> ·
+  <a href="#demo">Video</a> ·
   <a href="#getting-started">Getting started</a> ·
   <a href="#configuration">Configuration</a> ·
   <a href="#development-and-testing">Testing</a> ·
@@ -35,6 +36,10 @@ The application currently runs on **NEAR Testnet**. The demonstrated TEST tokens
 - **Onchain settlement:** the contract finalizes claims and refunds only after the token transfer succeeds.
 
 ## Demo
+
+**[Open Santa on NEAR Testnet](https://santa-near-testnet.fly.dev)** · [API readiness](https://santa-near-testnet.fly.dev/api/near/health)
+
+The hosted frontend and API run together on Fly.io. Public route, readiness and isolated-browser checks are recorded in [deployment verification](docs/fly-deployment.json).
 
 [Watch the 1 minute 42 second wallet demo](https://github.com/0xNana/santa-on-near/blob/2121b4f2571439d0ed71d75d4d9fd1164970556c/demo/near-demo.mp4).
 
@@ -259,7 +264,7 @@ This command signs a testnet transaction, deploys the WASM, initializes the cont
 
 The root Dockerfile builds a standalone Next.js image and runs it as the non-root `node` user. Supply public contract/token/origin values at build time and the relayer secret through the host's runtime secret manager. Run one application instance while coordination and rate limits remain process-local.
 
-[The Fly deployment guide](docs/fly-deployment.md) documents the proposed hosting configuration. A hosted application URL is not currently provided; the repository and recorded demo support local reproduction.
+The application is deployed at [santa-near-testnet.fly.dev](https://santa-near-testnet.fly.dev). [The Fly deployment guide](docs/fly-deployment.md) covers the single-Machine setup, runtime secret and smoke checks. The frontend and API share this origin; a separate frontend host is not required.
 
 ## Security and limitations
 

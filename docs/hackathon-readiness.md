@@ -52,3 +52,7 @@ The filled public checklist and X draft are in [submission.md](../submission.md)
 Public wallet proof and recording notes now live in `docs/near-wallet-proof.json` and `docs/near-wallet-demo.md`. The historical MP4 remains accessible at its immutable published commit. The cleaned tree is validated separately; the earlier 371-test count included retired-feature tests and is not the current suite size. All NEAR behavior tests are retained.
 
 The [cleanup validation record](cleanup-validation.json) reports 57 current tests, nine Rust tests, the real Sandbox, browser and non-root Docker checks, and 13 private values scanned across 2,340 build files. The current audit has 15 low and eight moderate findings, zero high/critical. A fresh clone no longer needs a local media directory.
+
+## Hosted deployment — 10 November 2026
+
+Santa is live at [santa-near-testnet.fly.dev](https://santa-near-testnet.fly.dev), with frontend and API on one Fly Machine in London. HTTPS pages, NEAR readiness, refused claim requests and isolated Chrome checks pass; see [deployment verification](fly-deployment.json). Only the dedicated relayer secret was provisioned after explicit approval. No new public-chain transaction was signed. The existing wallet video proves the local production flow; a fresh hosted transfer and real testnet expiry refund remain distinct unverified checks.
