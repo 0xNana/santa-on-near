@@ -287,6 +287,9 @@ The NEAR implementation builds on Santa's earlier interface and branding. The di
 
 Santa uses Next.js, React, Tailwind CSS, Fumadocs, NEAR Wallet Selector/Meteor Wallet, near-api-js, near-sdk-rs, and NEAR Contract Standards. NEAR Sandbox supplies the local integration environment. Codex assisted with implementation, tests, and documentation; the resulting source remains available for review.
 
+## Hackathon Disclosure
+> Santa is one of two NEAR HACKATHON entries by elegant. The other is [CareCart](https://github.com/0xNana/carecart), a separate project for clinic inventory and policy-controlled procurement. Santa focuses on personal token gifts and sponsored claims; the projects have distinct product and contract workflows.
+
 ## License
 
 [MIT](LICENSE). Third-party dependencies retain their own licenses. Demo audio and visual assets have separate attribution in the [recording notes](docs/near-wallet-demo.md) and [brand asset guide](docs/brand-assets.md).
